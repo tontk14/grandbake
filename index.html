@@ -1,0 +1,2533 @@
+<?php
+session_start();
+
+$isLoggedIn = isset($_SESSION["user_id"]);
+
+$subscribeMessage = "";
+$subscribeType = "";
+
+if (isset($_GET["subscribe"])) {
+
+    switch ($_GET["subscribe"]) {
+
+        case "success":
+            $subscribeMessage =
+                "สมัครรับข่าวสารสำเร็จ! เราได้ส่งอีเมลยืนยันไปให้คุณแล้ว";
+            $subscribeType = "success";
+            break;
+
+        case "exists":
+            $subscribeMessage =
+                "อีเมลนี้สมัครรับข่าวสารไว้แล้ว";
+            $subscribeType = "error";
+            break;
+
+        case "email_error":
+            $subscribeMessage =
+                "สมัครรับข่าวสารสำเร็จ แต่ไม่สามารถส่งอีเมลแจ้งเตือนได้";
+            $subscribeType = "error";
+            break;
+
+        case "invalid":
+            $subscribeMessage =
+                "กรุณากรอกอีเมลให้ถูกต้อง";
+            $subscribeType = "error";
+            break;
+
+        case "empty":
+            $subscribeMessage =
+                "กรุณากรอกอีเมล";
+            $subscribeType = "error";
+            break;
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Grand Bake | Korean Style Cake</title>
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@400;500;600;700&family=Prompt:wght@300;400;500;600&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        /* ==========================================
+           RESET
+        ========================================== */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Prompt", sans-serif;
+            background: #fcf8f4;
+            color: #4f3528;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button,
+        input {
+            font-family: inherit;
+        }
+
+
+        /* ==========================================
+           NAVBAR
+        ========================================== */
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            width: 100%;
+            height: 78px;
+
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(12px);
+
+            border-bottom: 1px solid #eadfd7;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 7%;
+        }
+
+        .logo img {
+            width: 125px;
+            height: auto;
+            display: block;
+        }
+
+        .menu {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .menu > a {
+            font-size: 15px;
+            color: #604638;
+            transition: 0.2s;
+        }
+
+        .menu > a:hover,
+        .menu > a.active {
+            color: #9a5b3c;
+        }
+
+
+        /* ==========================================
+           ACCOUNT
+        ========================================== */
+
+        .account-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .account-button {
+            width: 46px;
+            height: 46px;
+
+            padding: 0;
+
+            border: 1px solid #e5d7ca;
+            border-radius: 50%;
+
+            background: #fffaf6;
+            color: #68432f;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 20px;
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .account-button:hover {
+            background: #f5e9df;
+            transform: translateY(-1px);
+        }
+
+        .account-dropdown {
+            position: absolute;
+
+            top: calc(100% + 12px);
+            right: 0;
+
+            width: 290px;
+
+            background: #ffffff;
+
+            border: 1px solid #eaded5;
+            border-radius: 18px;
+
+            padding: 14px;
+
+            box-shadow: 0 18px 45px rgba(70,45,30,0.16);
+
+            z-index: 99999;
+
+            display: none;
+        }
+
+        .account-dropdown.account-open {
+            display: block;
+            animation: dropdownIn 0.18s ease;
+        }
+
+        @keyframes dropdownIn {
+            from {
+                opacity: 0;
+                transform: translateY(-6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .account-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 4px 4px 14px;
+        }
+
+        .account-avatar {
+            width: 46px;
+            height: 46px;
+
+            border-radius: 50%;
+
+            background: #f4e8dd;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .account-title {
+            font-family: "Noto Serif Thai", serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: #4d2e20;
+        }
+
+        .account-subtitle {
+            font-size: 12px;
+            color: #9a8171;
+            margin-top: 2px;
+        }
+
+        .account-divider {
+            height: 1px;
+            background: #eee3da;
+            margin: 0 0 8px;
+        }
+
+        .account-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            width: 100%;
+
+            padding: 11px 8px;
+
+            border-radius: 10px;
+
+            transition: 0.2s;
+        }
+
+        .account-link:hover {
+            background: #faf3ed;
+        }
+
+        .account-item-icon {
+            width: 34px;
+            height: 34px;
+
+            border-radius: 9px;
+
+            background: #f5e9df;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .account-item-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            text-align: left;
+        }
+
+        .account-item-text strong {
+            font-size: 14px;
+            font-weight: 500;
+            color: #4d2e20;
+        }
+
+        .account-item-text small {
+            font-size: 11px;
+            color: #9a8171;
+        }
+
+        .cart-icon {
+            font-size: 21px !important;
+            margin-left: 4px;
+        }
+
+        /* ==========================================
+           ACCOUNT ICON - FORCE DISPLAY
+        ========================================== */
+
+        .menu .account-box {
+            position: relative !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            flex-shrink: 0 !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+
+        .menu .account-button {
+            appearance: none !important;
+            -webkit-appearance: none !important;
+            width: 46px !important;
+            height: 46px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            border: 1px solid #e5d7ca !important;
+            border-radius: 50% !important;
+            background: #fffaf6 !important;
+            color: #68432f !important;
+            font-size: 21px !important;
+            line-height: 1 !important;
+            cursor: pointer !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            transform: none !important;
+        }
+
+        .menu .account-button:hover {
+            background: #f5e9df !important;
+            border-color: #d9c2af !important;
+            transform: translateY(-1px) !important;
+        }
+
+        .menu .account-button svg {
+            width: 21px !important;
+            height: 21px !important;
+            display: block !important;
+            fill: none !important;
+            stroke: currentColor !important;
+            stroke-width: 1.8 !important;
+        }
+
+
+        /* ==========================================
+           HERO
+        ========================================== */
+
+        .hero {
+            min-height: 655px;
+
+            padding: 65px 7%;
+
+            display: grid;
+            grid-template-columns: 0.92fr 1.08fr;
+            align-items: center;
+            gap: 55px;
+
+            background:
+                radial-gradient(circle at 12% 22%, rgba(220,193,168,0.28), transparent 27%),
+                radial-gradient(circle at 90% 80%, rgba(238,204,201,0.18), transparent 23%),
+                linear-gradient(135deg, #fbf5ee 0%, #f1e4d7 100%);
+        }
+
+        .hero-text {
+            max-width: 570px;
+        }
+
+        .small-title {
+            display: inline-block;
+
+            margin-bottom: 15px;
+
+            font-size: 12px;
+            letter-spacing: 4px;
+
+            color: #a16b50;
+        }
+
+        .hero h1 {
+            margin-bottom: 10px;
+
+            font-family: "Noto Serif Thai", serif;
+
+            font-size: clamp(45px, 5vw, 68px);
+
+            line-height: 1.12;
+
+            color: #563525;
+        }
+
+        .slogan {
+            margin-bottom: 25px;
+
+            font-family: "Noto Serif Thai", serif;
+
+            font-size: 22px;
+
+            color: #8b4f32;
+        }
+
+        .hero-text::after {
+            content: "";
+            display: block;
+
+            width: 85px;
+            height: 2px;
+
+            margin: 0 0 28px;
+
+            background: #c7a992;
+        }
+
+        .buy-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+
+            min-width: 185px;
+            height: 54px;
+            padding: 0 28px;
+
+            border-radius: 30px;
+
+            background: #7d4930;
+            color: white;
+
+            font-size: 15px;
+            font-weight: 500;
+
+            box-shadow: 0 10px 25px rgba(125,73,48,0.18);
+
+            transition: 0.25s;
+        }
+
+        .buy-button:hover {
+            background: #633822;
+            transform: translateY(-2px);
+            box-shadow: 0 13px 30px rgba(125,73,48,0.22);
+        }
+
+        .buy-button span {
+            font-size: 19px;
+        }
+
+
+        /* ==========================================
+           HERO SLIDER
+        ========================================== */
+
+        .cake-slider {
+            position: relative;
+
+            min-height: 500px;
+
+            border-radius: 30px;
+
+            background: #fff;
+
+            box-shadow: 0 22px 60px rgba(80,50,35,0.12);
+
+            overflow: hidden;
+        }
+
+        .slide {
+            width: 100%;
+            min-height: 500px;
+
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+        }
+
+        .slide-info {
+            position: relative;
+            z-index: 2;
+
+            padding: 55px 30px 75px 42px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            background:
+                linear-gradient(135deg, #fffaf6, #f7eee7);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-self: flex-start;
+
+            margin-bottom: 14px;
+
+            padding: 7px 12px;
+
+            border-radius: 20px;
+
+            background: #f0dfd1;
+            color: #7d4930;
+
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+        }
+
+        .slide-info h2 {
+            margin-bottom: 14px;
+
+            font-family: "Noto Serif Thai", serif;
+            font-size: 34px;
+            line-height: 1.25;
+
+            color: #563525;
+        }
+
+        .line {
+            width: 60px;
+            height: 2px;
+            margin-bottom: 16px;
+            background: #c7a992;
+        }
+
+        .slide-info p {
+            margin-bottom: 18px;
+
+            font-size: 14px;
+            line-height: 1.9;
+
+            color: #806b5b;
+        }
+
+        .slide-info h3 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #8b4f32;
+        }
+
+        .slide-image {
+            min-height: 500px;
+            background: #efe2d7;
+        }
+
+        .slide-image img {
+            width: 100%;
+            height: 100%;
+
+            min-height: 500px;
+
+            object-fit: cover;
+
+            display: block;
+        }
+
+        .slider-button {
+            position: absolute;
+            top: 50%;
+            z-index: 5;
+
+            width: 42px;
+            height: 42px;
+
+            transform: translateY(-50%);
+
+            border: 1px solid rgba(255,255,255,0.75);
+            border-radius: 50%;
+
+            background: rgba(65,42,30,0.28);
+            color: white;
+
+            font-size: 25px;
+            line-height: 1;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .slider-button:hover {
+            background: rgba(65,42,30,0.55);
+        }
+
+        .slider-button.prev {
+            left: 15px;
+        }
+
+        .slider-button.next {
+            right: 15px;
+        }
+
+        .slider-dots {
+            position: absolute;
+            left: 50%;
+            bottom: 18px;
+            z-index: 5;
+
+            display: flex;
+            gap: 7px;
+
+            transform: translateX(-50%);
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: rgba(255,255,255,0.52);
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .dot.active {
+            width: 22px;
+            border-radius: 10px;
+            background: white;
+        }
+
+
+        /* ==========================================
+           RECOMMEND
+        ========================================== */
+
+        .cake-recommend {
+            padding: 95px 7%;
+            background: #fffdfb;
+        }
+
+        .recommend-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .recommend-eyebrow {
+            margin-bottom: 8px;
+
+            font-size: 11px;
+            letter-spacing: 3px;
+
+            color: #a16b50;
+        }
+
+        .recommend-header h2 {
+            margin-bottom: 8px;
+
+            font-family: "Noto Serif Thai", serif;
+
+            font-size: 38px;
+            color: #563525;
+        }
+
+        .recommend-subtitle {
+            font-size: 14px;
+            color: #8a7062;
+        }
+
+
+        /* FILTER */
+
+        .cake-filters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 9px;
+
+            margin-bottom: 35px;
+        }
+
+        .cake-filter {
+            min-height: 42px;
+            padding: 0 17px;
+
+            border: 1px solid #e1d2c5;
+            border-radius: 24px;
+
+            background: #fffaf6;
+            color: #765544;
+
+            font-size: 13px;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .cake-filter:hover,
+        .cake-filter.active {
+            background: #70432e;
+            border-color: #70432e;
+            color: white;
+        }
+
+
+        /* GRID */
+
+        .recommend-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 22px;
+        }
+
+        .recommend-card {
+            overflow: hidden;
+
+            background: white;
+
+            border: 1px solid #eee2da;
+            border-radius: 22px;
+
+            box-shadow: 0 12px 35px rgba(80,50,35,0.06);
+
+            transition: 0.25s ease;
+        }
+
+        .recommend-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 18px 45px rgba(80,50,35,0.10);
+        }
+
+        .recommend-card img {
+            width: 100%;
+            height: 245px;
+
+            object-fit: cover;
+
+            display: block;
+
+            background: #f3ebe4;
+        }
+
+        .recommend-info {
+            padding: 18px;
+        }
+
+        .recommend-info h3 {
+            margin-bottom: 7px;
+
+            font-family: "Noto Serif Thai", serif;
+
+            font-size: 20px;
+            color: #563525;
+        }
+
+        .recommend-info p {
+            min-height: 48px;
+
+            margin-bottom: 15px;
+
+            font-size: 13px;
+            line-height: 1.8;
+
+            color: #8a7062;
+        }
+
+        .recommend-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .recommend-bottom > span {
+            font-size: 18px;
+            font-weight: 600;
+            color: #8b4f32;
+        }
+
+        .recommend-bottom a {
+            padding: 8px 12px;
+
+            border: 1px solid #ddcec3;
+            border-radius: 18px;
+
+            font-size: 12px;
+            color: #70432e;
+
+            transition: 0.2s;
+        }
+
+        .recommend-bottom a:hover {
+            background: #70432e;
+            border-color: #70432e;
+            color: white;
+        }
+
+
+        /* ==========================================
+           ABOUT
+        ========================================== */
+
+        .about-section {
+            padding: 95px 7%;
+
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+            gap: 65px;
+
+            align-items: center;
+
+            background: #f2e7dc;
+        }
+
+        .about-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .about-logo img {
+            width: 285px;
+            height: 285px;
+
+            object-fit: cover;
+
+            border-radius: 50%;
+
+            border: 8px solid rgba(255,255,255,0.72);
+
+            box-shadow: 0 18px 45px rgba(80,50,35,0.10);
+        }
+
+        .about-eyebrow {
+            margin-bottom: 9px;
+
+            font-size: 11px;
+            letter-spacing: 3px;
+
+            color: #a16b50;
+        }
+
+        .about-content h2 {
+            margin-bottom: 18px;
+
+            font-family: "Noto Serif Thai", serif;
+
+            font-size: 38px;
+            line-height: 1.3;
+
+            color: #563525;
+        }
+
+        .about-content p {
+            margin-bottom: 16px;
+
+            font-size: 15px;
+            line-height: 2;
+
+            color: #765d50;
+        }
+
+
+        /* ==========================================
+           NEWSLETTER
+        ========================================== */
+
+        .newsletter-section {
+            padding: 90px 20px;
+
+            background:
+                radial-gradient(circle at 15% 20%, rgba(255,255,255,0.65), transparent 25%),
+                linear-gradient(135deg, #f7ece2, #f2e2d6);
+
+            text-align: center;
+        }
+
+        .newsletter-content {
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .newsletter-label {
+            display: inline-block;
+
+            margin-bottom: 10px;
+
+            font-size: 11px;
+            letter-spacing: 3px;
+
+            color: #a16b50;
+        }
+
+        .newsletter-content h2 {
+            margin-bottom: 10px;
+
+            font-family: "Noto Serif Thai", serif;
+
+            font-size: 36px;
+
+            color: #563525;
+        }
+
+        .newsletter-content > p {
+            max-width: 620px;
+
+            margin: 0 auto 25px;
+
+            font-size: 14px;
+            line-height: 1.9;
+
+            color: #806b5b;
+        }
+
+        .newsletter-form {
+            display: flex;
+
+            max-width: 600px;
+
+            margin: 0 auto 13px;
+
+            gap: 10px;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+
+            height: 52px;
+
+            padding: 0 18px;
+
+            border: 1px solid #dfd0c3;
+            border-radius: 26px;
+
+            background: white;
+
+            outline: none;
+
+            font-size: 14px;
+            color: #4f3528;
+        }
+
+        .newsletter-form input:focus {
+            border-color: #a88a6c;
+
+            box-shadow:
+                0 0 0 4px rgba(168,138,108,0.10);
+        }
+
+        .newsletter-form button {
+            height: 52px;
+
+            padding: 0 24px;
+
+            border: none;
+            border-radius: 26px;
+
+            background: #7d4930;
+            color: white;
+
+            font-size: 14px;
+            font-weight: 500;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .newsletter-form button:hover {
+            background: #633822;
+            transform: translateY(-1px);
+        }
+
+        .newsletter-content small {
+            display: block;
+
+            font-size: 11px;
+
+            color: #a39488;
+        }
+
+        .subscribe-alert {
+            max-width: 600px;
+
+            margin: 0 auto 18px;
+
+            padding: 13px 17px;
+
+            border-radius: 13px;
+
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .subscribe-alert.success {
+            background: #edf7ee;
+            border: 1px solid #d5ead8;
+            color: #47704b;
+        }
+
+        .subscribe-alert.error {
+            background: #fff0ee;
+            border: 1px solid #f1d4d0;
+            color: #a24f47;
+        }
+
+
+        /* ==========================================
+           FOOTER
+        ========================================== */
+
+        .footer {
+            padding: 52px 7% 28px;
+
+            background: #4f3528;
+            color: #f9f1ea;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr 1fr;
+            gap: 40px;
+
+            padding-bottom: 28px;
+        }
+
+        .footer h3 {
+            margin-bottom: 10px;
+
+            font-family: "Noto Serif Thai", serif;
+
+            font-size: 22px;
+        }
+
+        .footer p,
+        .footer a {
+            font-size: 13px;
+            line-height: 1.9;
+            color: #dccab9;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .footer a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            padding-top: 22px;
+
+            border-top: 1px solid rgba(255,255,255,0.15);
+
+            text-align: center;
+
+            font-size: 11px;
+            color: #c7b2a3;
+        }
+
+
+        /* ==========================================
+           RESPONSIVE
+        ========================================== */
+
+        @media (max-width: 1050px) {
+
+            .hero {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-text {
+                max-width: 700px;
+                margin: 0 auto;
+                text-align: center;
+            }
+
+            .hero-text::after {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .recommend-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 850px) {
+
+            .menu {
+                gap: 15px;
+            }
+
+            .menu > a:not(.cart-icon) {
+                display: none;
+            }
+
+            .slide {
+                grid-template-columns: 1fr;
+            }
+
+            .slide-info {
+                position: absolute;
+                left: 0;
+                bottom: 0;
+
+                width: 100%;
+
+                padding: 28px 55px 45px;
+
+                color: white;
+
+                background: linear-gradient(
+                    to top,
+                    rgba(45,28,18,0.84),
+                    rgba(45,28,18,0)
+                );
+            }
+
+            .slide-info h2,
+            .slide-info h3 {
+                color: white;
+            }
+
+            .slide-info p {
+                color: rgba(255,255,255,0.92);
+            }
+
+            .slide-info .line {
+                background: rgba(255,255,255,0.7);
+            }
+
+            .slide-image,
+            .slide-image img {
+                min-height: 500px;
+                height: 500px;
+            }
+
+            .about-section {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .about-content {
+                max-width: 720px;
+                margin: 0 auto;
+            }
+
+            .about-content .buy-button {
+                margin-top: 8px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                height: 70px;
+                padding: 0 20px;
+            }
+
+            .logo img {
+                width: 105px;
+            }
+
+            .account-dropdown {
+                right: -10px;
+                width: 270px;
+            }
+
+            .menu .account-box {
+                display: flex !important;
+                visibility: visible !important;
+            }
+
+            .menu .account-button {
+                width: 42px !important;
+                height: 42px !important;
+            }
+
+            .menu .account-button svg {
+                width: 19px !important;
+                height: 19px !important;
+            }
+
+
+            .hero {
+                padding: 45px 20px;
+            }
+
+            .hero h1 {
+                font-size: 43px;
+            }
+
+            .slogan {
+                font-size: 19px;
+            }
+
+            .cake-slider,
+            .slide {
+                min-height: 420px;
+            }
+
+            .slide-info {
+                padding: 25px 45px 40px;
+            }
+
+            .slide-info h2 {
+                font-size: 27px;
+            }
+
+            .slide-image,
+            .slide-image img {
+                min-height: 420px;
+                height: 420px;
+            }
+
+            .cake-recommend {
+                padding: 65px 20px;
+            }
+
+            .recommend-header h2 {
+                font-size: 29px;
+            }
+
+            .recommend-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .recommend-card img {
+                height: 260px;
+            }
+
+            .about-section {
+                padding: 65px 20px;
+            }
+
+            .about-logo img {
+                width: 220px;
+                height: 220px;
+            }
+
+            .about-content h2 {
+                font-size: 30px;
+            }
+
+            .newsletter-section {
+                padding: 65px 20px;
+            }
+
+            .newsletter-content h2 {
+                font-size: 29px;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .newsletter-form input,
+            .newsletter-form button {
+                width: 100%;
+            }
+
+            .footer {
+                padding: 45px 20px 25px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <!-- ==========================================
+         NAVBAR
+    ========================================== -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+
+            <a href="index.php">
+
+                <img
+                    src="logo.jpg"
+                    alt="Grand Bake Logo"
+                >
+
+            </a>
+
+        </div>
+
+
+        <div class="menu">
+
+            <a
+                href="index.php"
+                class="active"
+            >
+                หน้าแรก
+            </a>
+
+            <a href="products.html">
+                สินค้า
+            </a>
+
+            <a href="#about">
+                เกี่ยวกับเรา
+            </a>
+
+            <a href="#contact">
+                ติดต่อเรา
+            </a>
+
+
+            <!-- ACCOUNT -->
+
+            <div class="account-box">
+
+                <button
+                    type="button"
+                    class="account-button"
+                    onclick="toggleAccount(event)"
+                    aria-label="บัญชีผู้ใช้"
+                >
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                    >
+                        <circle cx="12" cy="8" r="3.2"></circle>
+                        <path d="M5.5 19c.9-3.2 3.1-5 6.5-5s5.6 1.8 6.5 5"></path>
+                    </svg>
+                </button>
+
+
+                <div
+                    class="account-dropdown"
+                    id="accountDropdown"
+                >
+
+                    <div class="account-header">
+
+                        <div class="account-avatar">
+                            👤
+                        </div>
+
+                        <div>
+
+                            <?php if ($isLoggedIn): ?>
+
+                                <div class="account-title">
+                                    <?= htmlspecialchars($_SESSION["first_name"] ?? "สมาชิก") ?>
+                                </div>
+
+                                <div class="account-subtitle">
+                                    สมาชิก Grand Bake
+                                </div>
+
+                            <?php else: ?>
+
+                                <div class="account-title">
+                                    บัญชีสมาชิก
+                                </div>
+
+                                <div class="account-subtitle">
+                                    Grand Bake
+                                </div>
+
+                            <?php endif; ?>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="account-divider"></div>
+
+
+                    <?php if ($isLoggedIn): ?>
+
+                        <a
+                            href="profile.php"
+                            class="account-link"
+                        >
+
+                            <span class="account-item-icon">
+                                👤
+                            </span>
+
+                            <span class="account-item-text">
+
+                                <strong>
+                                    ดูบัญชีของฉัน
+                                </strong>
+
+                                <small>
+                                    จัดการข้อมูลส่วนตัว
+                                </small>
+
+                            </span>
+
+                        </a>
+
+
+                        <a
+                            href="logout.php"
+                            class="account-link"
+                        >
+
+                            <span class="account-item-icon">
+                                🚪
+                            </span>
+
+                            <span class="account-item-text">
+
+                                <strong>
+                                    ออกจากระบบ
+                                </strong>
+
+                                <small>
+                                    ออกจากบัญชีของคุณ
+                                </small>
+
+                            </span>
+
+                        </a>
+
+                    <?php else: ?>
+
+                        <a
+                            href="login.php"
+                            class="account-link"
+                        >
+
+                            <span class="account-item-icon">
+                                🔑
+                            </span>
+
+                            <span class="account-item-text">
+
+                                <strong>
+                                    เข้าสู่ระบบ
+                                </strong>
+
+                                <small>
+                                    เข้าสู่บัญชีของคุณ
+                                </small>
+
+                            </span>
+
+                        </a>
+
+
+                        <a
+                            href="register.php"
+                            class="account-link"
+                        >
+
+                            <span class="account-item-icon">
+                                📝
+                            </span>
+
+                            <span class="account-item-text">
+
+                                <strong>
+                                    สมัครสมาชิก
+                                </strong>
+
+                                <small>
+                                    สร้างบัญชีใหม่
+                                </small>
+
+                            </span>
+
+                        </a>
+
+                    <?php endif; ?>
+
+                </div>
+
+            </div>
+
+
+            <!-- CART -->
+
+            <a
+                href="cart.html"
+                class="cart-icon"
+                aria-label="ตะกร้าสินค้า"
+            >
+                🛒
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ==========================================
+         HERO
+    ========================================== -->
+
+    <section class="hero">
+
+        <div class="hero-text">
+
+            <p class="small-title">
+                KOREAN STYLE CAKE
+            </p>
+
+            <h1>
+                สัมผัสความอร่อย<br>
+                ระดับพรีเมียม
+            </h1>
+
+            <p class="slogan">
+                ในทุกปอนด์ที่คุณเลือก
+            </p>
+
+            <a
+                href="products.html"
+                class="buy-button"
+            >
+                เลือกซื้อเค้ก
+                <span>→</span>
+            </a>
+
+        </div>
+
+
+        <!-- SLIDER -->
+
+        <div class="cake-slider">
+
+            <button
+                class="slider-button prev"
+                onclick="previousCake()"
+                aria-label="ก่อนหน้า"
+            >
+                ‹
+            </button>
+
+
+            <div class="slide">
+
+                <div class="slide-info">
+
+                    <span class="badge">
+                        BEST SELLER
+                    </span>
+
+                    <h2 id="cake-name">
+                        Strawberry<br>
+                        Cream Cake
+                    </h2>
+
+                    <div class="line"></div>
+
+                    <p id="cake-description">
+                        เค้กครีมสดสตรอว์เบอร์รี
+                        <br>
+                        เนื้อนุ่ม หอมละมุน
+                    </p>
+
+                    <h3 id="cake-price">
+                        ฿450
+                    </h3>
+
+                </div>
+
+
+                <div class="slide-image">
+
+                    <img
+                        id="cake-image"
+                        src="cake1.png"
+                        alt="Strawberry Cream Cake"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="slider-button next"
+                onclick="nextCake()"
+                aria-label="ถัดไป"
+            >
+                ›
+            </button>
+
+
+            <div class="slider-dots">
+
+                <span
+                    class="dot active"
+                    onclick="showCake(0)"
+                ></span>
+
+                <span
+                    class="dot"
+                    onclick="showCake(1)"
+                ></span>
+
+                <span
+                    class="dot"
+                    onclick="showCake(2)"
+                ></span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==========================================
+         RECOMMENDATIONS
+    ========================================== -->
+
+    <section class="cake-recommend">
+
+        <div class="recommend-header">
+
+            <p class="recommend-eyebrow">
+                FIND YOUR FAVORITE
+            </p>
+
+            <h2>
+                คุณชอบเค้กสไตล์ไหน?
+            </h2>
+
+            <p class="recommend-subtitle">
+                เลือกสไตล์ที่คุณชอบ แล้ว Grand Bake จะแนะนำเค้กให้คุณ
+            </p>
+
+        </div>
+
+
+        <div class="cake-filters">
+
+            <button
+                class="cake-filter active"
+                data-filter="all"
+            >
+                ✨ ทั้งหมด
+            </button>
+
+            <button
+                class="cake-filter"
+                data-filter="fruit"
+            >
+                🍓 ผลไม้
+            </button>
+
+            <button
+                class="cake-filter"
+                data-filter="chocolate"
+            >
+                🍫 ช็อกโกแลต
+            </button>
+
+            <button
+                class="cake-filter"
+                data-filter="matcha"
+            >
+                🍵 มัทฉะ
+            </button>
+
+            <button
+                class="cake-filter"
+                data-filter="cheesecake"
+            >
+                🧀 ชีสเค้ก
+            </button>
+
+            <button
+                class="cake-filter"
+                data-filter="korean"
+            >
+                🎀 Korean Style
+            </button>
+
+        </div>
+
+
+        <div class="recommend-grid">
+
+            <!-- 1 -->
+
+            <div class="recommend-card" data-category="fruit">
+
+                <img
+                    src="cake1.png"
+                    alt="Strawberry Cream Cake"
+                >
+
+                <div class="recommend-info">
+
+                    <h3>
+                        Strawberry Cream Cake
+                    </h3>
+
+                    <p>
+                        สตรอว์เบอร์รีสด
+                        หอมหวานละมุน
+                    </p>
+
+                    <div class="recommend-bottom">
+
+                        <span>
+                            ฿450
+                        </span>
+
+                        <a href="detail.html?cake=1">
+                            ดูรายละเอียด →
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- 2 -->
+
+            <div class="recommend-card" data-category="chocolate">
+
+                <img
+                    src="cake2.png"
+                    alt="Chocolate Fudge Cake"
+                >
+
+                <div class="recommend-info">
+
+                    <h3>
+                        Chocolate Fudge Cake
+                    </h3>
+
+                    <p>
+                        ช็อกโกแลตเข้มข้น
+                        เนื้อนุ่มละมุน
+                    </p>
+
+                    <div class="recommend-bottom">
+
+                        <span>
+                            ฿490
+                        </span>
+
+                        <a href="detail.html?cake=2">
+                            ดูรายละเอียด →
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- 3 -->
+
+            <div class="recommend-card" data-category="fruit">
+
+                <img
+                    src="cake3.png"
+                    alt="Blueberry Cream Cake"
+                >
+
+                <div class="recommend-info">
+
+                    <h3>
+                        Blueberry Cream Cake
+                    </h3>
+
+                    <p>
+                        บลูเบอร์รีครีมสด
+                        หอมหวานสดชื่น
+                    </p>
+
+                    <div class="recommend-bottom">
+
+                        <span>
+                            ฿470
+                        </span>
+
+                        <a href="detail.html?cake=3">
+                            ดูรายละเอียด →
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- 4 -->
+
+            <div class="recommend-card" data-category="chocolate">
+
+                <img
+                    src="cake4.png"
+                    alt="Chocolate Cake"
+                >
+
+                <div class="recommend-info">
+
+                    <h3>
+                        Chocolate Cake
+                    </h3>
+
+                    <p>
+                        เค้กช็อกโกแลตเข้มข้น
+                        สำหรับคนรักโกโก้
+                    </p>
+
+                    <div class="recommend-bottom">
+
+                        <span>
+                            ฿490
+                        </span>
+
+                        <a href="detail.html?cake=4">
+                            ดูรายละเอียด →
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- 5 -->
+
+            <div class="recommend-card" data-category="fruit">
+
+                <img
+                    src="cake5.png"
+                    alt="Mango Cream Cake"
+                >
+
+                <div class="recommend-info">
+
+                    <h3>
+                        Mango Cream Cake
+                    </h3>
+
+                    <p>
+                        มะม่วงหวานหอม
+                        สดชื่นและละมุน
+                    </p>
+
+                    <div class="recommend-bottom">
+
+                        <span>
+                            ฿480
+                        </span>
+
+                        <a href="detail.html?cake=5">
+                            ดูรายละเอียด →
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- 6 -->
+
+            <div class="recommend-card" data-category="matcha">
+
+                <img
+                    src="cake6.png"
+                    alt="Matcha Cream Cake"
+                >
+
+                <div class="recommend-info">
+
+                    <h3>
+                        Matcha Cream Cake
+                    </h3>
+
+                    <p>
+                        มัทฉะครีมสด
+                        หอมละมุน รสกลมกล่อม
+                    </p>
+
+                    <div class="recommend-bottom">
+
+                        <span>
+                            ฿490
+                        </span>
+
+                        <a href="detail.html?cake=6">
+                            ดูรายละเอียด →
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- 7 -->
+
+            <div class="recommend-card" data-category="korean">
+
+                <img
+                    src="cake7.png"
+                    alt="Earl Grey Milk Cake"
+                >
+
+                <div class="recommend-info">
+
+                    <h3>
+                        Earl Grey Milk Cake
+                    </h3>
+
+                    <p>
+                        ชาเอิร์ลเกรย์หอมละมุน
+                        เนื้อนุ่มละลายในปาก
+                    </p>
+
+                    <div class="recommend-bottom">
+
+                        <span>
+                            ฿480
+                        </span>
+
+                        <a href="detail.html?cake=7">
+                            ดูรายละเอียด →
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- 8 -->
+
+            <div class="recommend-card" data-category="cheesecake">
+
+                <img
+                    src="cake8.png"
+                    alt="Basque Cheesecake"
+                >
+
+                <div class="recommend-info">
+
+                    <h3>
+                        Basque Cheesecake
+                    </h3>
+
+                    <p>
+                        ชีสเค้กหน้าไหม้
+                        เนื้อเนียนนุ่ม ละมุนลิ้น
+                    </p>
+
+                    <div class="recommend-bottom">
+
+                        <span>
+                            ฿520
+                        </span>
+
+                        <a href="detail.html?cake=8">
+                            ดูรายละเอียด →
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- 9 -->
+
+            <div class="recommend-card" data-category="caramel">
+
+                <img
+                    src="cake9.png"
+                    alt="Caramel Butter Cake"
+                >
+
+                <div class="recommend-info">
+
+                    <h3>
+                        Caramel Butter Cake
+                    </h3>
+
+                    <p>
+                        คาราเมลบัตเตอร์เค้ก
+                        หอมเนยและคาราเมล
+                    </p>
+
+                    <div class="recommend-bottom">
+
+                        <span>
+                            ฿450
+                        </span>
+
+                        <a href="detail.html?cake=9">
+                            ดูรายละเอียด →
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- 10 -->
+
+            <div class="recommend-card" data-category="korean">
+
+                <img
+                    src="cake10.png"
+                    alt="Vanilla Cloud Cake"
+                >
+
+                <div class="recommend-info">
+
+                    <h3>
+                        Vanilla Cloud Cake
+                    </h3>
+
+                    <p>
+                        วานิลลาครีมสด
+                        เนื้อนุ่ม หอมวานิลลา
+                    </p>
+
+                    <div class="recommend-bottom">
+
+                        <span>
+                            ฿460
+                        </span>
+
+                        <a href="detail.html?cake=10">
+                            ดูรายละเอียด →
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==========================================
+         ABOUT
+    ========================================== -->
+
+    <section class="about-section" id="about">
+
+        <div class="about-logo">
+
+            <img
+                src="logo.jpg"
+                alt="Grand Bake"
+            >
+
+        </div>
+
+
+        <div class="about-content">
+
+            <p class="about-eyebrow">
+                ABOUT GRAND BAKE
+            </p>
+
+            <h2>
+                ความอร่อยที่ตั้งใจ<br>
+                ทำให้ทุกปอนด์
+            </h2>
+
+            <p>
+                Grand Bake ตั้งใจนำเสนอเค้กสไตล์เกาหลี
+                ที่ให้ความสำคัญกับทั้งรสชาติและความสวยงาม
+                เพื่อให้ทุกเค้กเป็นส่วนหนึ่งของช่วงเวลาพิเศษของคุณ
+            </p>
+
+            <p>
+                เราคัดสรรวัตถุดิบและออกแบบแต่ละเมนู
+                ให้มีรสชาติละมุน รับประทานง่าย
+                และเหมาะสำหรับการมอบเป็นของขวัญ
+                หรือฉลองในโอกาสสำคัญ
+            </p>
+
+            <a
+                href="products.html"
+                class="buy-button"
+            >
+                ค้นพบเมนูของเรา
+                <span>→</span>
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==========================================
+         NEWSLETTER
+    ========================================== -->
+
+    <section
+        class="newsletter-section"
+        id="contact"
+    >
+
+        <div class="newsletter-content">
+
+            <span class="newsletter-label">
+                GRAND BAKE NEWSLETTER
+            </span>
+
+            <h2>
+                รับข่าวสารจาก Grand Bake
+            </h2>
+
+            <p>
+                สมัครรับข่าวสาร โปรโมชั่น เมนูเค้กใหม่
+                และสิทธิพิเศษ ส่งตรงถึงอีเมลของคุณ
+            </p>
+
+
+            <?php if ($subscribeMessage !== ""): ?>
+
+                <div
+                    class="subscribe-alert <?= $subscribeType ?>"
+                >
+                    <?= htmlspecialchars($subscribeMessage) ?>
+                </div>
+
+            <?php endif; ?>
+
+
+            <form
+                action="subscribe.php"
+                method="POST"
+                class="newsletter-form"
+            >
+
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="กรอกอีเมลของคุณ"
+                    required
+                >
+
+                <button type="submit">
+                    สมัครรับข่าวสาร
+                </button>
+
+            </form>
+
+
+            <small>
+                เราจะส่งเฉพาะข่าวสารที่เกี่ยวข้องกับ Grand Bake เท่านั้น ♡
+            </small>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==========================================
+         FOOTER
+    ========================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-grid">
+
+            <div>
+
+                <h3>
+                    Grand Bake
+                </h3>
+
+                <p>
+                    สัมผัสความอร่อยระดับพรีเมียม
+                    ในทุกปอนด์ที่คุณเลือก
+                </p>
+
+            </div>
+
+
+            <div>
+
+                <h3>
+                    เมนู
+                </h3>
+
+                <div class="footer-links">
+
+                    <a href="index.php">
+                        หน้าแรก
+                    </a>
+
+                    <a href="products.html">
+                        สินค้า
+                    </a>
+
+                    <a href="cart.html">
+                        ตะกร้าสินค้า
+                    </a>
+
+                    <a href="register.php">
+                        สมัครสมาชิก
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div>
+
+                <h3>
+                    Grand Bake
+                </h3>
+
+                <p>
+                    KOREAN STYLE CAKE
+                </p>
+
+                <p>
+                    ♡ Sweet Moments, Always
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+            © 2026 Grand Bake. All rights reserved.
+        </div>
+
+    </footer>
+
+
+    <!-- ==========================================
+         ACCOUNT JAVASCRIPT
+    ========================================== -->
+
+    <script>
+
+        function toggleAccount(event) {
+
+            event.stopPropagation();
+
+            const dropdown =
+                document.getElementById("accountDropdown");
+
+            dropdown.classList.toggle("account-open");
+
+        }
+
+        document.addEventListener("click", function(event) {
+
+            const account =
+                document.querySelector(".account-box");
+
+            const dropdown =
+                document.getElementById("accountDropdown");
+
+            if (
+                account &&
+                dropdown &&
+                !account.contains(event.target)
+            ) {
+
+                dropdown.classList.remove("account-open");
+
+            }
+
+        });
+
+    </script>
+
+
+    <!-- ==========================================
+         CAKE FILTER
+    ========================================== -->
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                const buttons =
+                    document.querySelectorAll(".cake-filter");
+
+                const cards =
+                    document.querySelectorAll(".recommend-card");
+
+                buttons.forEach(function(button) {
+
+                    button.addEventListener(
+                        "click",
+                        function() {
+
+                            buttons.forEach(
+                                function(btn) {
+
+                                    btn.classList.remove(
+                                        "active"
+                                    );
+
+                                }
+                            );
+
+                            this.classList.add("active");
+
+                            const selectedCategory =
+                                this.getAttribute(
+                                    "data-filter"
+                                );
+
+                            cards.forEach(
+                                function(card) {
+
+                                    const category =
+                                        card.getAttribute(
+                                            "data-category"
+                                        );
+
+                                    if (
+                                        selectedCategory === "all" ||
+                                        category === selectedCategory
+                                    ) {
+
+                                        card.style.display = "";
+
+                                    } else {
+
+                                        card.style.display = "none";
+
+                                    }
+
+                                }
+                            );
+
+                        }
+                    );
+
+                });
+
+            }
+        );
+
+    </script>
+
+
+    <!-- ==========================================
+         HERO SLIDER
+    ========================================== -->
+
+    <script>
+
+        const cakeSlides = [
+
+            {
+                name: "Strawberry<br> Cream Cake",
+                description:
+                    "เค้กครีมสดสตรอว์เบอร์รี<br>เนื้อนุ่ม หอมละมุน",
+                price: "฿450",
+                image: "cake1.png",
+                alt: "Strawberry Cream Cake",
+                badge: "BEST SELLER"
+            },
+
+            {
+                name: "Chocolate<br> Fudge Cake",
+                description:
+                    "ช็อกโกแลตเข้มข้น<br>หอมละมุนทุกคำ",
+                price: "฿490",
+                image: "cake2.png",
+                alt: "Chocolate Fudge Cake",
+                badge: "GRAND BAKE"
+            },
+
+            {
+                name: "Blueberry<br> Cream Cake",
+                description:
+                    "บลูเบอร์รีสด<br>หวานอมเปรี้ยว สดชื่น",
+                price: "฿470",
+                image: "cake3.png",
+                alt: "Blueberry Cream Cake",
+                badge: "FAVORITE"
+            }
+
+        ];
+
+
+        let currentCake = 0;
+
+
+        function showCake(index) {
+
+            currentCake =
+                (index + cakeSlides.length) %
+                cakeSlides.length;
+
+            const cake =
+                cakeSlides[currentCake];
+
+
+            document.getElementById(
+                "cake-name"
+            ).innerHTML = cake.name;
+
+
+            document.getElementById(
+                "cake-description"
+            ).innerHTML = cake.description;
+
+
+            document.getElementById(
+                "cake-price"
+            ).textContent = cake.price;
+
+
+            const image =
+                document.getElementById("cake-image");
+
+            image.src = cake.image;
+            image.alt = cake.alt;
+
+
+            const badge =
+                document.querySelector(".badge");
+
+            badge.textContent = cake.badge;
+
+
+            document
+                .querySelectorAll(".dot")
+                .forEach(function(dot, i) {
+
+                    dot.classList.toggle(
+                        "active",
+                        i === currentCake
+                    );
+
+                });
+
+        }
+
+
+        function nextCake() {
+
+            showCake(currentCake + 1);
+
+        }
+
+
+        function previousCake() {
+
+            showCake(currentCake - 1);
+
+        }
+
+
+        setInterval(
+            function() {
+                nextCake();
+            },
+            4500
+        );
+
+
+        showCake(0);
+
+    </script>
+
+</body>
+
+</html>
