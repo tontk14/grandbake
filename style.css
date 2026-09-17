@@ -1,0 +1,251 @@
+/* GRAND BAKE CLEAN STYLE */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@400;500;600;700&family=Prompt:wght@300;400;500;600&display=swap');
+:root{--bg:#fffaf6;--brown:#56382b;--brown2:#75452f;--light:#765647}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:"Prompt",sans-serif;background:var(--bg);color:var(--brown)}button,input,textarea{font-family:inherit}a{color:inherit}
+.navbar{width:100%;height:110px;padding:10px 7%;display:flex;align-items:center;justify-content:space-between;background:#fff;border-bottom:1px solid #eee3db;position:relative;z-index:1000}
+.logo a{display:block}.logo img{width:105px;height:auto;display:block}.menu{display:flex;align-items:center;gap:38px}
+.menu>a:not(.cart-icon){position:relative;padding:10px 0;color:var(--brown);text-decoration:none;font-size:16px;white-space:nowrap}.menu>a:not(.cart-icon):hover{color:#a87b5e}
+.menu>a.active:after{content:"";position:absolute;left:50%;bottom:0;width:6px;height:6px;border-radius:50%;background:#8b5e47;transform:translateX(-50%)}
+.account-box{position:relative;display:flex;align-items:center}.account-button{width:46px;height:46px;padding:0;border:1px solid #e5d7ca;border-radius:50%;background:#fffaf6;color:#68432f;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer}
+.account-button:hover{background:#f5e9df}.account-dropdown{position:absolute;top:calc(100% + 12px);right:0;width:280px;padding:14px;display:none!important;background:#fff;border:1px solid #eadfd5;border-radius:16px;box-shadow:0 15px 35px rgba(70,45,30,.16);z-index:99999}
+.account-dropdown.account-open{display:block!important}.account-header{display:flex;align-items:center;gap:12px;padding:4px 4px 14px}.account-avatar{width:44px;height:44px;flex:0 0 44px;border-radius:50%;background:#f4e8dd;display:flex;align-items:center;justify-content:center;font-size:20px}
+.account-title{font-family:"Noto Serif Thai",serif;font-size:16px;font-weight:600;color:#4d2e20}.account-subtitle{margin-top:2px;font-size:12px;color:#9a8171}.account-divider{height:1px;margin:0 0 8px;background:#eee3da}
+.account-dropdown .account-link{width:100%;min-height:55px;padding:10px 8px;margin:2px 0;display:flex;align-items:center;gap:12px;border-radius:10px;text-decoration:none}.account-dropdown .account-link:hover{background:#faf3ed}
+.account-item-icon{width:34px;height:34px;flex:0 0 34px;border-radius:9px;background:#f5e9df;display:flex;align-items:center;justify-content:center;font-size:16px}.account-item-text{display:flex;flex-direction:column;gap:2px;text-align:left}.account-item-text strong{font-size:14px;font-weight:500;color:#4d2e20}.account-item-text small{font-size:11px;color:#9a8171}
+.cart-icon{width:42px;height:42px;display:flex;align-items:center;justify-content:center;border-radius:50%;text-decoration:none;font-size:20px}.cart-icon:hover{background:#f8f1ea}
+.hero{min-height:500px;padding:55px 7% 40px;display:grid;grid-template-columns:.8fr 1.2fr;align-items:center;gap:50px}.hero-text{padding-left:30px}.small-title{margin-bottom:22px;color:#a77a5d;font-size:14px;letter-spacing:5px}.hero-text h1{margin-bottom:22px;color:#57372a;font-family:"Noto Serif Thai",serif;font-size:55px;line-height:1.25}.slogan{margin-bottom:35px;color:var(--light);font-size:19px}.buy-button{display:inline-flex;align-items:center;gap:20px;padding:16px 27px;background:#643d2b;color:#fff;border-radius:30px;text-decoration:none}.buy-button:hover{background:#8a5a43}
+.cake-slider{position:relative;width:100%;height:360px}.slide{width:100%;height:360px;display:grid;grid-template-columns:.8fr 1.2fr;overflow:hidden;border-radius:25px;background:#eee6dd}.slide-info{padding:45px 25px 40px 50px;display:flex;flex-direction:column;justify-content:center;background:#f2e9df}.badge{width:max-content;margin-bottom:20px;padding:7px 14px;border-radius:20px;background:#704735;color:#fff;font-size:11px;letter-spacing:1px}.slide-info h2{margin-bottom:15px;font-family:"Noto Serif Thai",serif;font-size:31px;line-height:1.25}.line{width:120px;height:1px;margin-bottom:15px;background:#bda99a}.slide-info p{margin-bottom:15px;color:var(--light);font-size:15px;line-height:1.7}.slide-info h3{color:#5f3929;font-size:25px}.slide-image{width:100%;height:100%;overflow:hidden}.slide-image img{width:100%;height:100%;display:block;object-fit:cover}
+.slider-button{position:absolute;top:50%;z-index:5;width:48px;height:48px;border:0;border-radius:50%;background:#fff;color:#684535;font-size:32px;cursor:pointer;transform:translateY(-50%)}.slider-button.prev{left:-24px}.slider-button.next{right:-24px}.slider-dots{position:absolute;left:50%;bottom:20px;display:flex;gap:9px;transform:translateX(-50%)}.dot{width:9px;height:9px;border-radius:50%;background:#d6c7bc;cursor:pointer}.dot.active{background:#6c4432}
+.featured{padding:45px 7% 80px;text-align:center}.section-title>p{margin-bottom:10px;color:#a77a5d;font-size:13px;letter-spacing:5px}.section-title h2{margin-bottom:8px;color:#59392c;font-family:"Noto Serif Thai",serif;font-size:32px}.title-line{display:flex;justify-content:center;color:#b99580;margin:8px 0 25px}
+.cake-list{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin-top:25px}.cake-card{overflow:hidden;text-align:left;border-radius:20px;background:#f5eee7;box-shadow:0 5px 20px rgba(70,40,20,.05)}.cake-card:hover{transform:translateY(-5px)}.card-image{width:100%;height:210px;overflow:hidden}.card-image img{width:100%;height:100%;display:block;object-fit:cover}.card-content{padding:20px 22px}.card-content h3{margin-bottom:8px;color:#5b3a2d;font-family:"Noto Serif Thai",serif;font-size:19px}.card-content p{min-height:42px;margin-bottom:15px;color:#80695d;font-size:14px;line-height:1.6}.card-bottom{display:flex;align-items:center;justify-content:space-between}.card-bottom strong{color:#5c3828;font-size:21px}.card-bottom button{width:42px;height:42px;border:0;border-radius:50%;background:#d8b894;color:#fff;cursor:pointer}.all-products{display:inline-block;margin-top:35px;padding-bottom:5px;color:#654333;text-decoration:none;border-bottom:1px solid #654333}
+.products-header{padding:85px 20px 45px;text-align:center}.products-eyebrow{margin-bottom:15px;color:#9a674d;font-size:13px;letter-spacing:5px}.products-header h1{margin-bottom:15px;color:#4f3022;font-family:"Noto Serif Thai",serif;font-size:48px}.products-header>p:last-child{color:#765647}.products{width:82%;max-width:1250px;margin:20px auto 100px;display:grid;grid-template-columns:repeat(3,1fr);gap:30px}.product-card{overflow:hidden;border-radius:20px;background:#f5eee7;box-shadow:0 7px 25px rgba(70,40,20,.06)}.product-card>img{width:100%;height:270px;display:block;object-fit:cover}.product-content{padding:24px}.product-content h2{margin-bottom:8px;color:#4f3022;font-family:"Noto Serif Thai",serif;font-size:22px}.product-content p{min-height:48px;color:#765647;font-size:14px;line-height:1.7}.product-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:20px}.product-bottom .price{color:#75452f;font-size:22px;font-weight:600}.product-bottom button,.detail-button{display:inline-flex;align-items:center;justify-content:center;border:0;padding:10px 18px;border-radius:20px;background:#75452f;color:#fff;font-size:14px;text-decoration:none;cursor:pointer}.product-bottom button:hover,.detail-button:hover{background:#5d3726}
+.product-detail{width:82%;max-width:1200px;margin:80px auto 120px;display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}.detail-image{overflow:hidden;border-radius:28px;background:#f3e9df}.detail-image img{width:100%;height:560px;display:block;object-fit:cover}.detail-info{padding:20px 10px}.detail-category,.detail-eyebrow{margin-bottom:20px;color:#9a6248;font-size:13px;letter-spacing:3px}.detail-info h1,.detail-content h1{margin:0;color:#4f3022;font-family:"Noto Serif Thai",serif;font-size:48px;line-height:1.25}.detail-line{width:70px;height:1px;margin:25px 0;background:#b99580}.detail-description{color:#765647;font-size:16px;line-height:1.9}.detail-price{margin:25px 0;color:#75452f;font-size:30px;font-weight:600}.detail-option{margin-top:25px}.detail-option label{display:block;margin-bottom:10px;color:#4f3022;font-size:15px;font-weight:500}.size-options{display:flex;gap:10px}.size-btn{padding:10px 18px;border:1px solid #d7c3b5;border-radius:20px;background:#fff;color:#75452f;cursor:pointer}.size-btn.active{background:#75452f;color:#fff}.quantity{display:flex;align-items:center;width:max-content;overflow:hidden;border:1px solid #d7c3b5;border-radius:20px}.quantity button{width:42px;height:40px;border:0;background:#fff;color:#75452f;font-size:20px;cursor:pointer}.quantity span,#quantity{width:45px;min-width:45px;text-align:center}.add-cart{width:100%;margin-top:35px;padding:16px;border:0;border-radius:30px;background:#75452f;color:#fff;font-size:16px;font-weight:500;cursor:pointer}.add-cart:hover{background:#5d3726}.back-products{display:block;margin-top:20px;text-align:center;color:#75452f;text-decoration:none;font-size:14px}
+@media(max-width:1000px){.hero{grid-template-columns:1fr}.hero-text{padding-left:0;text-align:center}.cake-slider{max-width:800px;margin:auto}.cake-list,.products{grid-template-columns:repeat(2,1fr)}.product-detail{gap:40px}}
+@media(max-width:700px){.navbar{height:80px;padding:8px 5%}.logo img{width:82px}.menu{gap:12px}.menu>a:not(.cart-icon){display:none}.account-button{width:40px;height:40px}.account-dropdown{right:-10px;width:270px}.hero{padding:40px 5%}.hero-text h1{font-size:40px}.slide{grid-template-columns:1fr;height:auto}.slide-info{min-height:280px;padding:30px}.slide-image{height:300px}.slider-button.prev{left:-8px}.slider-button.next{right:-8px}.cake-list,.products,.product-detail{grid-template-columns:1fr}.products,.product-detail{width:90%}.products-header h1{font-size:38px}.detail-image img{height:400px}.detail-info h1,.detail-content h1{font-size:38px}}
+/* =================================
+   CAKE RECOMMENDATION
+================================= */
+
+.cake-recommend {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 100px 7% 120px;
+}
+
+.recommend-header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.recommend-eyebrow {
+    font-size: 13px;
+    letter-spacing: 5px;
+    color: #a36b50;
+    margin-bottom: 12px;
+}
+
+.recommend-header h2 {
+    font-family: "Noto Serif Thai", serif;
+    font-size: 38px;
+    color: #58382a;
+    margin-bottom: 12px;
+}
+
+.recommend-subtitle {
+    font-size: 15px;
+    color: #80675a;
+}
+
+
+/* =================================
+   FILTER BUTTONS
+================================= */
+
+.cake-filters {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 45px;
+    flex-wrap: wrap;
+}
+
+.cake-filter {
+    border: 1px solid #dfcfc2;
+    background: #fff;
+    color: #694b3c;
+
+    padding: 12px 24px;
+
+    border-radius: 30px;
+
+    font-family: "Prompt", sans-serif;
+    font-size: 14px;
+
+    cursor: pointer;
+
+    transition: all 0.25s ease;
+}
+
+.cake-filter:hover {
+    background: #f4e9df;
+}
+
+.cake-filter.active {
+    background: #7d4930;
+    border-color: #7d4930;
+    color: #fff;
+}
+
+
+/* =================================
+   CAKE GRID
+================================= */
+
+.recommend-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+}
+
+
+/* =================================
+   CAKE CARD
+================================= */
+
+.recommend-card {
+    background: #f5eee8;
+    border-radius: 22px;
+    overflow: hidden;
+
+    box-shadow: 0 8px 25px rgba(80, 50, 35, 0.06);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+
+    animation: cakeShow 0.35s ease;
+}
+
+.recommend-card:hover {
+    transform: translateY(-6px);
+
+    box-shadow:
+        0 15px 35px rgba(80, 50, 35, 0.12);
+}
+
+
+.recommend-card img {
+    width: 100%;
+    height: 260px;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+
+/* =================================
+   CARD INFO
+================================= */
+
+.recommend-info {
+    padding: 22px;
+}
+
+.recommend-info h3 {
+    font-family: "Noto Serif Thai", serif;
+    font-size: 22px;
+    color: #573728;
+
+    margin-bottom: 8px;
+}
+
+.recommend-info p {
+    font-size: 14px;
+    color: #80675a;
+
+    min-height: 44px;
+    line-height: 1.7;
+
+    margin-bottom: 18px;
+}
+
+
+/* =================================
+   PRICE + BUTTON
+================================= */
+
+.recommend-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.recommend-bottom span {
+    font-size: 21px;
+    font-weight: 600;
+    color: #7d4930;
+}
+
+.recommend-bottom a {
+    font-size: 13px;
+    color: #8c5a43;
+
+    border-bottom: 1px solid #caa58f;
+
+    padding-bottom: 2px;
+}
+
+
+/* =================================
+   ANIMATION
+================================= */
+
+@keyframes cakeShow {
+
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* =================================
+   RESPONSIVE
+================================= */
+
+@media (max-width: 900px) {
+
+    .recommend-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .cake-recommend {
+        padding: 70px 20px;
+    }
+
+    .recommend-header h2 {
+        font-size: 30px;
+    }
+
+    .recommend-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .recommend-card img {
+        height: 240px;
+    }
+
+}

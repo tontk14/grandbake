@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>สินค้า | Grand Bake</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@400;500;600;700&family=Prompt:wght@300;400;500;600&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <!-- LOGO -->
+    <div class="logo">
+
+        <a href="index.php">
+
+            <img
+                src="logo.jpg"
+                alt="Grand Bake Logo"
+            >
+
+        </a>
+
+    </div>
+
+
+    <!-- MENU -->
+    <div class="menu">
+
+        <a href="index.php">
+            หน้าแรก
+        </a>
+
+        <a
+            href="products.html"
+            class="active"
+        >
+            สินค้า
+        </a>
+
+        <a href="#">
+            เกี่ยวกับเรา
+        </a>
+
+        <a href="#">
+            ติดต่อเรา
+        </a>
+
+
+        <!-- ACCOUNT -->
+        <div class="account-box">
+
+            <button
+                type="button"
+                class="account-button"
+                id="accountButton"
+                aria-label="บัญชีผู้ใช้"
+            >
+                👤
+            </button>
+
+
+            <!-- ACCOUNT DROPDOWN -->
+            <div
+                class="account-dropdown"
+                id="accountDropdown"
+            >
+
+                <div class="account-header">
+
+                    <div class="account-avatar">
+                        👤
+                    </div>
+
+                    <div>
+
+                        <div class="account-title">
+                            บัญชีสมาชิก
+                        </div>
+
+                        <div class="account-subtitle">
+                            Grand Bake
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="account-divider"></div>
+
+
+                <!-- PROFILE -->
+                <a href="profile.php">
+
+                    <span class="account-item-icon">
+                        👤
+                    </span>
+
+                    <span class="account-item-text">
+
+                        <strong>
+                            ดูบัญชีของฉัน
+                        </strong>
+
+                        <small>
+                            จัดการข้อมูลส่วนตัว
+                        </small>
+
+                    </span>
+
+                </a>
+
+
+                <!-- LOGIN -->
+                <a href="login.php">
+
+                    <span class="account-item-icon">
+                        🔑
+                    </span>
+
+                    <span class="account-item-text">
+
+                        <strong>
+                            เข้าสู่ระบบ
+                        </strong>
+
+                        <small>
+                            เข้าสู่บัญชีของคุณ
+                        </small>
+
+                    </span>
+
+                </a>
+
+
+                <!-- REGISTER -->
+                <a href="register.php">
+
+                    <span class="account-item-icon">
+                        📝
+                    </span>
+
+                    <span class="account-item-text">
+
+                        <strong>
+                            สมัครสมาชิก
+                        </strong>
+
+                        <small>
+                            สร้างบัญชีใหม่
+                        </small>
+
+                    </span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- CART -->
+        <a
+            href="cart.html"
+            class="cart-icon"
+            aria-label="ตะกร้าสินค้า"
+        >
+            🛒
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- ================= PRODUCTS HEADER ================= -->
+
+<section class="products-header">
+
+    <p class="products-eyebrow">
+        GRAND BAKE
+    </p>
+
+    <h1>
+        เค้กของทางร้าน
+    </h1>
+
+    <p>
+        เลือกความอร่อยที่เหมาะกับช่วงเวลาพิเศษของคุณ
+    </p>
+
+</section>
+
+
+<!-- ================= PRODUCTS ================= -->
+
+<!-- ================= PRODUCTS ================= -->
+
+<section class="products">
+
+
+    <!-- 1 STRAWBERRY -->
+
+    <div class="product-card">
+
+        <img
+            src="cake1.png"
+            alt="Strawberry Cream Cake"
+        >
+
+        <div class="product-content">
+
+            <h2>
+                Strawberry Cream Cake
+            </h2>
+
+            <p>
+                สตรอว์เบอร์รีสด
+                หวานละมุน หอมสดชื่น
+            </p>
+
+            <div class="product-bottom">
+
+                <span class="price">
+                    ฿450
+                </span>
+
+                <a
+                    href="detail.html?cake=1"
+                    class="detail-button"
+                >
+                    ดูรายละเอียด
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- 2 CHOCOLATE FUDGE -->
+
+    <div class="product-card">
+
+        <img
+            src="cake2.png"
+            alt="Chocolate Fudge Cake"
+        >
+
+        <div class="product-content">
+
+            <h2>
+                Chocolate Fudge Cake
+            </h2>
+
+            <p>
+                ช็อกโกแลตเข้มข้น
+                หอมละมุนทุกคำ
+            </p>
+
+            <div class="product-bottom">
+
+                <span class="price">
+                    ฿490
+                </span>
+
+                <a
+                    href="detail.html?cake=2"
+                    class="detail-button"
+                >
+                    ดูรายละเอียด
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- 3 BLUEBERRY -->
+
+    <div class="product-card">
+
+        <img
+            src="cake3.png"
+            alt="Blueberry Cream Cake"
+        >
+
+        <div class="product-content">
+
+            <h2>
+                Blueberry Cream Cake
+            </h2>
+
+            <p>
+                บลูเบอร์รีสด
+                หวานอมเปรี้ยว สดชื่น
+            </p>
+
+            <div class="product-bottom">
+
+                <span class="price">
+                    ฿470
+                </span>
+
+                <a
+                    href="detail.html?cake=3"
+                    class="detail-button"
+                >
+                    ดูรายละเอียด
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- 4 CHOCOLATE -->
+
+    <div class="product-card">
+
+        <img
+            src="cake4.png"
+            alt="Chocolate Cake"
+        >
+
+        <div class="product-content">
+
+            <h2>
+                Chocolate Cake
+            </h2>
+
+            <p>
+                เค้กช็อกโกแลตเนื้อนุ่ม
+                รสชาติเข้มข้น
+            </p>
+
+            <div class="product-bottom">
+
+                <span class="price">
+                    ฿490
+                </span>
+
+                <a
+                    href="detail.html?cake=4"
+                    class="detail-button"
+                >
+                    ดูรายละเอียด
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- 5 MANGO -->
+
+    <div class="product-card">
+
+        <img
+            src="cake5.png"
+            alt="Mango Cream Cake"
+        >
+
+        <div class="product-content">
+
+            <h2>
+                Mango Cream Cake
+            </h2>
+
+            <p>
+                มะม่วงน้ำดอกไม้
+                หวานฉ่ำจากธรรมชาติ
+            </p>
+
+            <div class="product-bottom">
+
+                <span class="price">
+                    ฿480
+                </span>
+
+                <a
+                    href="detail.html?cake=5"
+                    class="detail-button"
+                >
+                    ดูรายละเอียด
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- 6 MATCHA -->
+
+    <div class="product-card">
+
+        <img
+            src="cake6.png"
+            alt="Matcha Cream Cake"
+        >
+
+        <div class="product-content">
+
+            <h2>
+                Matcha Cream Cake
+            </h2>
+
+            <p>
+                มัทฉะหอมเข้มข้น
+                ผสานครีมสดเนื้อนุ่ม
+            </p>
+
+            <div class="product-bottom">
+
+                <span class="price">
+                    ฿490
+                </span>
+
+                <a
+                    href="detail.html?cake=6"
+                    class="detail-button"
+                >
+                    ดูรายละเอียด
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- 7 EARL GREY -->
+
+    <div class="product-card">
+
+        <img
+            src="cake7.png"
+            alt="Earl Grey Milk Cake"
+        >
+
+        <div class="product-content">
+
+            <h2>
+                Earl Grey Milk Cake
+            </h2>
+
+            <p>
+                ชาเอิร์ลเกรย์หอมละมุน
+                เนื้อนุ่มละลายในปาก
+            </p>
+
+            <div class="product-bottom">
+
+                <span class="price">
+                    ฿480
+                </span>
+
+                <a
+                    href="detail.html?cake=7"
+                    class="detail-button"
+                >
+                    ดูรายละเอียด
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- 8 BASQUE -->
+
+    <div class="product-card">
+
+        <img
+            src="cake8.png"
+            alt="Basque Cheesecake"
+        >
+
+        <div class="product-content">
+
+            <h2>
+                Basque Cheesecake
+            </h2>
+
+            <p>
+                ชีสเค้กหน้าไหม้
+                เนื้อเนียนนุ่ม ละมุนลิ้น
+            </p>
+
+            <div class="product-bottom">
+
+                <span class="price">
+                    ฿520
+                </span>
+
+                <a
+                    href="detail.html?cake=8"
+                    class="detail-button"
+                >
+                    ดูรายละเอียด
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- 9 CARAMEL -->
+
+    <div class="product-card">
+
+        <img
+            src="cake9.png"
+            alt="Caramel Butter Cake"
+        >
+
+        <div class="product-content">
+
+            <h2>
+                Caramel Butter Cake
+            </h2>
+
+            <p>
+                คาราเมลหอมหวาน
+                ผสานความหอมมันของเนย
+            </p>
+
+            <div class="product-bottom">
+
+                <span class="price">
+                    ฿450
+                </span>
+
+                <a
+                    href="detail.html?cake=9"
+                    class="detail-button"
+                >
+                    ดูรายละเอียด
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- 10 VANILLA -->
+
+    <div class="product-card">
+
+        <img
+            src="cake10.png"
+            alt="Vanilla Cloud Cake"
+        >
+
+        <div class="product-content">
+
+            <h2>
+                Vanilla Cloud Cake
+            </h2>
+
+            <p>
+                วานิลลาครีมสด
+                เนื้อนุ่ม หอมวานิลลา
+            </p>
+
+            <div class="product-bottom">
+
+                <span class="price">
+                    ฿460
+                </span>
+
+                <a
+                    href="detail.html?cake=10"
+                    class="detail-button"
+                >
+                    ดูรายละเอียด
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</section>
+
+<!-- ================= ACCOUNT JAVASCRIPT ================= -->
+
+<script>
+
+const accountButton =
+    document.getElementById("accountButton");
+
+const accountDropdown =
+    document.getElementById("accountDropdown");
+
+
+accountButton.addEventListener("click", function(event) {
+
+    event.stopPropagation();
+
+    accountDropdown.classList.toggle("account-open");
+
+});
+
+
+document.addEventListener("click", function(event) {
+
+    if (
+        !accountDropdown.contains(event.target) &&
+        !accountButton.contains(event.target)
+    ) {
+
+        accountDropdown.classList.remove("account-open");
+
+    }
+
+});
+
+</script>
+
+
+</body>
+
+</html>

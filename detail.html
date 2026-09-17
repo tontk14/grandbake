@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>รายละเอียดสินค้า | Grand Bake</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@400;500;600;700&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* =========================
+           RESET
+        ========================= */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Prompt", sans-serif;
+            background: #fcf8f4;
+            color: #4f3528;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            width: 100%;
+            height: 78px;
+            background: #fff;
+            border-bottom: 1px solid #eadfd7;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 7%;
+        }
+
+        .logo img {
+            width: 125px;
+            height: auto;
+            display: block;
+        }
+
+        .menu {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .menu > a {
+            font-size: 15px;
+            color: #604638;
+            transition: 0.2s;
+        }
+
+        .menu > a:hover {
+            color: #9a5b3c;
+        }
+
+        .cart-icon {
+            font-size: 20px !important;
+        }
+
+
+        /* =========================
+           DETAIL
+        ========================= */
+
+        .detail-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 70px 30px 90px;
+        }
+
+        .detail-card {
+            background: #fff;
+            border-radius: 28px;
+            overflow: hidden;
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            box-shadow: 0 12px 40px rgba(80, 50, 35, 0.08);
+        }
+
+
+        /* =========================
+           IMAGE
+        ========================= */
+
+        .detail-image {
+            width: 100%;
+            min-height: 580px;
+            background: #f3ebe4;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 35px;
+        }
+
+        .detail-image img {
+            width: 100%;
+            max-width: 500px;
+            height: 500px;
+
+            object-fit: cover;
+
+            border-radius: 20px;
+            display: block;
+        }
+
+
+        /* =========================
+           CONTENT
+        ========================= */
+
+        .detail-content {
+            padding: 65px 55px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .detail-brand {
+            font-size: 13px;
+            letter-spacing: 4px;
+            color: #a16b50;
+            margin-bottom: 12px;
+        }
+
+        .detail-title {
+            font-family: "Noto Serif Thai", serif;
+            font-size: 42px;
+            line-height: 1.25;
+            color: #563525;
+            margin-bottom: 18px;
+        }
+
+        .detail-description {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #765d50;
+            margin-bottom: 28px;
+        }
+
+        .detail-price {
+            font-size: 32px;
+            font-weight: 600;
+            color: #8b4f32;
+            margin-bottom: 30px;
+        }
+
+
+        /* =========================
+           INFO
+        ========================= */
+
+        .detail-info {
+            border-top: 1px solid #eadfd7;
+            border-bottom: 1px solid #eadfd7;
+
+            padding: 22px 0;
+            margin-bottom: 30px;
+        }
+
+        .info-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+
+            font-size: 15px;
+        }
+
+        .info-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-label {
+            font-weight: 600;
+            min-width: 100px;
+            color: #573c2f;
+        }
+
+        .info-value {
+            color: #765d50;
+        }
+
+
+        /* =========================
+           QUANTITY
+        ========================= */
+
+        .quantity-title {
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .quantity {
+            width: 150px;
+            height: 46px;
+
+            display: flex;
+            align-items: center;
+
+            border: 1px solid #ddcec3;
+            border-radius: 30px;
+            overflow: hidden;
+
+            margin-bottom: 22px;
+        }
+
+        .quantity button {
+            width: 45px;
+            height: 100%;
+
+            border: none;
+            background: #faf5f0;
+
+            color: #714936;
+            font-size: 18px;
+
+            cursor: pointer;
+        }
+
+        .quantity button:hover {
+            background: #eee2d8;
+        }
+
+        .quantity span {
+            flex: 1;
+            text-align: center;
+            font-size: 16px;
+        }
+
+
+        /* =========================
+           ADD CART
+        ========================= */
+
+        .add-cart {
+            width: 100%;
+            height: 55px;
+
+            border: none;
+            border-radius: 30px;
+
+            background: #7d4930;
+            color: white;
+
+            font-family: "Prompt", sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        .add-cart:hover {
+            background: #633822;
+            transform: translateY(-2px);
+        }
+
+
+        /* =========================
+           BACK BUTTON
+        ========================= */
+
+        .back-products {
+            display: block;
+            text-align: center;
+
+            margin-top: 28px;
+
+            color: #765444;
+            font-size: 15px;
+        }
+
+        .back-products:hover {
+            color: #9a5b3c;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 900px) {
+
+            .navbar {
+                padding: 0 25px;
+            }
+
+            .menu {
+                gap: 15px;
+            }
+
+            .menu > a:not(.cart-icon) {
+                display: none;
+            }
+
+            .detail-container {
+                padding: 35px 18px 60px;
+            }
+
+            .detail-card {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-image {
+                min-height: auto;
+                padding: 20px;
+            }
+
+            .detail-image img {
+                height: auto;
+                max-height: 450px;
+            }
+
+            .detail-content {
+                padding: 40px 28px;
+            }
+
+            .detail-title {
+                font-size: 32px;
+            }
+        }
+
+
+        @media (max-width: 500px) {
+
+            .logo img {
+                width: 105px;
+            }
+
+            .detail-title {
+                font-size: 28px;
+            }
+
+            .detail-price {
+                font-size: 28px;
+            }
+
+            .detail-content {
+                padding: 30px 20px;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+
+    <!-- =========================
+         NAVBAR
+    ========================== -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            <a href="index.html">
+                <img src="logo.jpg" alt="Grand Bake">
+            </a>
+        </div>
+
+        <div class="menu">
+
+            <a href="index.html">หน้าแรก</a>
+
+            <a href="products.html">
+                สินค้า
+            </a>
+
+            <a href="#">
+                เกี่ยวกับเรา
+            </a>
+
+            <a href="#">
+                ติดต่อเรา
+            </a>
+
+            <a href="cart.html" class="cart-icon">
+                🛒
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =========================
+         DETAIL
+    ========================== -->
+
+    <main class="detail-container">
+
+        <div class="detail-card">
+
+
+            <!-- IMAGE -->
+
+            <div class="detail-image">
+
+                <img
+                    id="cakeImage"
+                    src="cake1.png"
+                    alt="Strawberry Cream Cake"
+                >
+
+            </div>
+
+
+            <!-- CONTENT -->
+
+            <div class="detail-content">
+
+                <div class="detail-brand">
+                    GRAND BAKE
+                </div>
+
+                <h1
+                    class="detail-title"
+                    id="cakeName"
+                >
+                    Strawberry Cream Cake
+                </h1>
+
+                <p
+                    class="detail-description"
+                    id="cakeDescription"
+                >
+                    เค้กสตรอว์เบอร์รีครีมสด
+                    เนื้อเค้กนุ่มละมุน
+                    พร้อมสตรอว์เบอร์รีสด
+                    หวานกำลังดีและหอมสดชื่น
+                </p>
+
+                <div
+                    class="detail-price"
+                    id="cakePrice"
+                >
+                    ฿450
+                </div>
+
+
+                <!-- INFO -->
+
+                <div class="detail-info">
+
+                    <div class="info-row">
+                        <span class="info-label">
+                            ขนาด
+                        </span>
+
+                        <span class="info-value">
+                            1 ปอนด์
+                        </span>
+                    </div>
+
+
+                    <div class="info-row">
+                        <span class="info-label">
+                            เหมาะสำหรับ
+                        </span>
+
+                        <span class="info-value">
+                            4–6 คน
+                        </span>
+                    </div>
+
+
+                    <div class="info-row">
+                        <span class="info-label">
+                            ประเภท
+                        </span>
+
+                        <span
+                            class="info-value"
+                            id="cakeType"
+                        >
+                            Korean Style Cake
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <!-- QUANTITY -->
+
+                <div class="quantity-title">
+                    จำนวน
+                </div>
+
+                <div class="quantity">
+
+                    <button
+                        type="button"
+                        onclick="changeQuantity(-1)"
+                    >
+                        −
+                    </button>
+
+                    <span id="quantity">
+                        1
+                    </span>
+
+                    <button
+                        type="button"
+                        onclick="changeQuantity(1)"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+
+                <!-- ADD CART -->
+
+                <button
+                    type="button"
+                    class="add-cart"
+                    onclick="addToCart()"
+                >
+                    🛒 เพิ่มลงตะกร้า
+                </button>
+
+
+                <a
+                    href="products.html"
+                    class="back-products"
+                >
+                    ← กลับไปหน้าสินค้า
+                </a>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+
+    <script>
+
+       const cakes = {
+
+    1: {
+        name: "Strawberry Cream Cake",
+        image: "cake1.png",
+        price: 450,
+        description: "เค้กสตรอว์เบอร์รีครีมสด เนื้อเค้กนุ่มละมุน พร้อมสตรอว์เบอร์รีสด หวานกำลังดีและหอมสดชื่น",
+        type: "Fruit Cream Cake"
+    },
+
+    2: {
+        name: "Chocolate Fudge Cake",
+        image: "cake2.png",
+        price: 490,
+        description: "เค้กช็อกโกแลตเนื้อเข้มข้น นุ่มละมุน พร้อมซอสช็อกโกแลตฟัดจ์ รสชาติกลมกล่อม",
+        type: "Chocolate Cake"
+    },
+
+    3: {
+        name: "Blueberry Cream Cake",
+        image: "cake3.png",
+        price: 470,
+        description: "เค้กครีมบลูเบอร์รี เนื้อเค้กนุ่ม หอมครีมสด พร้อมบลูเบอร์รีรสเปรี้ยวหวาน",
+        type: "Fruit Cream Cake"
+    },
+
+    4: {
+        name: "Chocolate Cake",
+        image: "cake4.png",
+        price: 490,
+        description: "เค้กช็อกโกแลตเนื้อนุ่ม หอมโกโก้ รสชาติเข้มข้น เหมาะสำหรับคนรักช็อกโกแลต",
+        type: "Chocolate Cake"
+    },
+
+    5: {
+        name: "Mango Cream Cake",
+        image: "cake5.png",
+        price: 480,
+        description: "เค้กครีมมะม่วง เนื้อนุ่มละมุน พร้อมมะม่วงหวานหอม สดชื่นและรับประทานง่าย",
+        type: "Fruit Cream Cake"
+    },
+
+    6: {
+        name: "Matcha Cream Cake",
+        image: "cake6.png",
+        price: 490,
+        description: "เค้กมัทฉะครีมสด กลิ่นหอมของชาเขียวญี่ปุ่น รสละมุนเข้ากันอย่างลงตัว",
+        type: "Korean Style Cake"
+    },
+
+    7: {
+        name: "Earl Grey Milk Cake",
+        image: "cake7.png",
+        price: 480,
+        description: "เค้กชาเอิร์ลเกรย์ครีมนม หอมกลิ่นชาอ่อน ๆ เนื้อนุ่มละมุน เหมาะสำหรับคนชอบรสชาติที่เบาสบาย",
+        type: "Korean Style Cake"
+    },
+
+    8: {
+        name: "Basque Cheesecake",
+        image: "cake8.png",
+        price: 520,
+        description: "ชีสเค้กหน้าไหม้สไตล์บาสก์ เนื้อด้านในเนียนนุ่ม หอมชีส รสชาติเข้มข้นกำลังดี",
+        type: "Cheesecake"
+    },
+
+    9: {
+        name: "Caramel Butter Cake",
+        image: "cake9.png",
+        price: 450,
+        description: "เค้กเนยคาราเมล หอมเนยและคาราเมล รสหวานกำลังดี เนื้อนุ่มรับประทานง่าย",
+        type: "Butter Cake"
+    },
+
+    10: {
+        name: "Vanilla Cloud Cake",
+        image: "cake10.png",
+        price: 460,
+        description: "เค้กวานิลลาครีมสด เนื้อนุ่มฟูนุ่มเหมือนก้อนเมฆ หอมวานิลลาและครีมสด",
+        type: "Korean Style Cake"
+    }
+
+};
+
+
+        /* =========================
+           GET CAKE FROM URL
+        ========================== */
+
+        const params = new URLSearchParams(
+            window.location.search
+        );
+
+        const cakeId = params.get("cake") || "1";
+
+        const cake = cakes[cakeId] || cakes[1];
+        console.log("cakeId =", cakeId);
+        console.log("cake =", cake);
+
+
+        /* =========================
+           SHOW DATA
+        ========================== */
+
+        document.getElementById("cakeImage").src =
+            cake.image;
+
+        document.getElementById("cakeImage").alt =
+            cake.name;
+
+        document.getElementById("cakeName").textContent =
+            cake.name;
+
+        document.getElementById("cakeDescription").textContent =
+            cake.description;
+
+        document.getElementById("cakePrice").textContent =
+            "฿" + cake.price;
+
+        document.getElementById("cakeType").textContent =
+            cake.type;
+
+
+        /* =========================
+           QUANTITY
+        ========================== */
+
+        let quantity = 1;
+
+        function changeQuantity(amount) {
+
+            quantity += amount;
+
+            if (quantity < 1) {
+                quantity = 1;
+            }
+
+            document.getElementById("quantity").textContent =
+                quantity;
+        }
+
+
+        /* =========================
+           ADD CART
+        ========================== */
+
+function addToCart() {
+
+    const quantity =
+        Number(document.getElementById("quantity").textContent);
+
+    const productId =
+        Number(cakeId);
+
+    const cart =
+        JSON.parse(
+            localStorage.getItem("grandBakeCart")
+        ) || [];
+
+    const existingProduct =
+        cart.find(item => item.id === productId);
+
+    if (existingProduct) {
+
+        existingProduct.quantity += quantity;
+
+    } else {
+
+        cart.push({
+
+            id: productId,
+
+            name: cake.name,
+
+            price: cake.price,
+
+            image: cake.image,
+
+            quantity: quantity
+
+        });
+
+    }
+
+    localStorage.setItem(
+        "grandBakeCart",
+        JSON.stringify(cart)
+    );
+
+    alert(
+        cake.name +
+        " ถูกเพิ่มลงในตะกร้าแล้ว 🛒"
+    );
+
+}
+
+    </script>
+
+</body>
+</html>
