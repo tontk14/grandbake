@@ -1,0 +1,567 @@
+<?php
+session_start();
+
+// ตั้งค่า HTTP Status Code เป็น 404 Not Found
+http_response_code(404);
+
+$isLoggedIn = isset($_SESSION["user_id"]);
+$userName = $isLoggedIn ? ($_SESSION["first_name"] ?? "ผู้ใช้งาน") : "";
+?>
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 ไม่พบหน้าที่ต้องการ | Grand Bake</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@400;500;600;700&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Prompt", sans-serif;
+            background-color: #fcf8f4;
+            color: #4f3528;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* NAVBAR ENHANCEMENTS */
+        .navbar {
+            background: #ffffff;
+            border-bottom: 1px solid #eee3db;
+            padding: 12px 7%;
+        }
+
+        /* 404 ERROR SECTION */
+        .error-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .error-container {
+            max-width: 680px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 32px;
+            padding: 55px 40px 50px;
+            box-shadow: 0 15px 45px rgba(86, 56, 43, 0.08);
+            border: 1px solid #f0e6de;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .error-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #d8b894, #75452f, #d8b894);
+        }
+
+        /* CAKE ILLUSTRATION */
+        .error-illustration {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fcf4ec;
+            border-radius: 50%;
+            box-shadow: 0 8px 25px rgba(117, 69, 47, 0.12);
+            animation: float 3.5s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .error-badge {
+            display: inline-block;
+            padding: 6px 18px;
+            background: #f5e9df;
+            color: #8c5738;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+        }
+
+        .error-code {
+            font-family: "Noto Serif Thai", serif;
+            font-size: 82px;
+            font-weight: 700;
+            color: #56382b;
+            line-height: 1;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+
+        .error-code span {
+            color: #b78363;
+        }
+
+        .error-title {
+            font-family: "Noto Serif Thai", serif;
+            font-size: 26px;
+            font-weight: 600;
+            color: #4a2e21;
+            margin-bottom: 14px;
+        }
+
+        .error-desc {
+            font-size: 15px;
+            color: #7b6254;
+            line-height: 1.8;
+            margin-bottom: 16px;
+            max-width: 520px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .error-quote {
+            font-size: 13px;
+            color: #9d7b68;
+            font-style: italic;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .error-quote::before,
+        .error-quote::after {
+            content: "—";
+            color: #d6c1b3;
+        }
+
+        /* ACTION BUTTONS */
+        .error-actions {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-bottom: 35px;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 28px;
+            background: #75452f;
+            color: #ffffff !important;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 15px rgba(117, 69, 47, 0.25);
+        }
+
+        .btn-primary:hover {
+            background: #5d3726;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(117, 69, 47, 0.35);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 13px 26px;
+            background: #ffffff;
+            color: #75452f !important;
+            border: 1.5px solid #d8c4b6;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #f7efe7;
+            border-color: #bfa796;
+            transform: translateY(-2px);
+        }
+
+        /* QUICK SUGGESTIONS */
+        .quick-links {
+            border-top: 1px dashed #e8ded6;
+            padding-top: 24px;
+        }
+
+        .quick-links-title {
+            font-size: 13px;
+            color: #8c7365;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .quick-links-list {
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .quick-links-list a {
+            font-size: 13px;
+            color: #75452f;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: color 0.2s;
+        }
+
+        .quick-links-list a:hover {
+            color: #a87b5e;
+            text-decoration: underline;
+        }
+
+        /* FOOTER */
+        .footer {
+            padding: 45px 7% 24px;
+            background: #4f3528;
+            color: #f9f1ea;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr 1fr;
+            gap: 36px;
+            padding-bottom: 24px;
+        }
+
+        .footer h3 {
+            margin-bottom: 10px;
+            font-family: "Noto Serif Thai", serif;
+            font-size: 20px;
+        }
+
+        .footer p,
+        .footer a {
+            font-size: 13px;
+            line-height: 1.8;
+            color: #dccab9;
+            text-decoration: none;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .footer a:hover {
+            color: #ffffff;
+        }
+
+        .footer-bottom {
+            padding-top: 18px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            text-align: center;
+            font-size: 11px;
+            color: #c7b2a3;
+        }
+
+        @media (max-width: 768px) {
+            .error-container {
+                padding: 40px 22px 35px;
+            }
+
+            .error-code {
+                font-size: 64px;
+            }
+
+            .error-title {
+                font-size: 22px;
+            }
+
+            .error-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn-primary, .btn-secondary {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+    <nav class="navbar">
+        <div class="logo">
+            <a href="index.php">
+                <img src="logo.jpg" alt="Grand Bake Logo">
+            </a>
+        </div>
+
+        <div class="menu">
+            <a href="index.php">หน้าแรก</a>
+            <a href="products.php">สินค้า</a>
+            <a href="index.php#about">เกี่ยวกับเรา</a>
+            <a href="index.php#contact">ติดต่อเรา</a>
+
+            <!-- ACCOUNT -->
+            <div class="account-box">
+                <button
+                    type="button"
+                    class="account-button"
+                    id="accountButton"
+                    aria-label="บัญชีผู้ใช้"
+                >
+                    👤
+                </button>
+
+                <div class="account-dropdown" id="accountDropdown">
+                    <div class="account-header">
+                        <div class="account-avatar">
+                            👤
+                        </div>
+                        <div>
+                            <div class="account-title">
+                                <?= $isLoggedIn ? htmlspecialchars($userName) : "บัญชีสมาชิก" ?>
+                            </div>
+                            <div class="account-subtitle">
+                                Grand Bake
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="account-divider"></div>
+
+                    <?php if ($isLoggedIn): ?>
+                        <a href="profile.php" class="account-link">
+                            <span class="account-item-icon">👤</span>
+                            <span class="account-item-text">
+                                <strong>ข้อมูลส่วนตัว</strong>
+                                <small>ดูและแก้ไขโปรไฟล์</small>
+                            </span>
+                        </a>
+
+                        <a href="logout.php" class="account-link">
+                            <span class="account-item-icon">🚪</span>
+                            <span class="account-item-text">
+                                <strong>ออกจากระบบ</strong>
+                                <small>ออกจากระบบสมาชิก</small>
+                            </span>
+                        </a>
+                    <?php else: ?>
+                        <a href="profile.php" class="account-link">
+                            <span class="account-item-icon">👤</span>
+                            <span class="account-item-text">
+                                <strong>ดูบัญชีของฉัน</strong>
+                                <small>จัดการข้อมูลส่วนตัว</small>
+                            </span>
+                        </a>
+
+                        <a href="login.php" class="account-link">
+                            <span class="account-item-icon">🔑</span>
+                            <span class="account-item-text">
+                                <strong>เข้าสู่ระบบ</strong>
+                                <small>เข้าสู่บัญชีของคุณ</small>
+                            </span>
+                        </a>
+
+                        <a href="register.php" class="account-link">
+                            <span class="account-item-icon">📝</span>
+                            <span class="account-item-text">
+                                <strong>สมัครสมาชิก</strong>
+                                <small>สร้างบัญชีใหม่</small>
+                            </span>
+                        </a>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <!-- CART -->
+            <a href="cart.html" class="cart-icon" aria-label="ตะกร้าสินค้า">
+                🛒
+            </a>
+        </div>
+    </nav>
+
+    <!-- ================= 404 ERROR CONTENT ================= -->
+    <main class="error-section">
+        <div class="error-container">
+
+            <!-- Cute Cake SVG Illustration -->
+            <div class="error-illustration" aria-hidden="true">
+                <svg width="80" height="80" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Plate -->
+                    <ellipse cx="50" cy="85" rx="42" ry="7" fill="#E8DCD1"/>
+                    <ellipse cx="50" cy="84" rx="38" ry="5.5" fill="#FAF4EE"/>
+
+                    <!-- Cake Base Layers -->
+                    <path d="M22 62C22 58 78 58 78 62V75C78 79 22 79 22 75V62Z" fill="#8C583E"/>
+                    <path d="M22 62C22 66 78 66 78 62C78 58 22 58 22 62Z" fill="#A46B4D"/>
+                    
+                    <!-- Cake Cream Center Layer -->
+                    <path d="M22 52C22 48 78 48 78 52V62C78 66 22 66 22 62V52Z" fill="#FFF7ED"/>
+                    <ellipse cx="50" cy="52" rx="28" ry="4" fill="#FEEAD3"/>
+
+                    <!-- Cake Top Layer -->
+                    <path d="M26 40C26 36 74 36 74 40V52C74 56 26 56 26 52V40Z" fill="#75452F"/>
+                    <ellipse cx="50" cy="40" rx="24" ry="4" fill="#8C583E"/>
+
+                    <!-- Cream Drops / Frosting -->
+                    <path d="M26 42C29 46 32 40 35 44C38 48 42 41 46 45C50 49 54 41 58 44C62 47 66 41 70 44C73 42 74 40 74 40C74 40 68 36 50 36C32 36 26 40 26 40Z" fill="#FFFBF5"/>
+                    <circle cx="34" cy="46" r="2.2" fill="#FFFBF5"/>
+                    <circle cx="48" cy="47" r="2" fill="#FFFBF5"/>
+                    <circle cx="63" cy="46" r="2.2" fill="#FFFBF5"/>
+
+                    <!-- Strawberry / Cherry on Top -->
+                    <path d="M50 24C44 24 43 31 50 35C57 31 56 24 50 24Z" fill="#D9534F"/>
+                    <!-- Strawberry Leaf -->
+                    <path d="M50 24C49 20 53 19 55 19C54 21 52 23 50 24Z" fill="#5B8E55"/>
+                    <path d="M49 24C48 21 45 20 44 21C46 22 47 23 49 24Z" fill="#7BB474"/>
+
+                    <!-- Sparkles / Sweet Stars -->
+                    <path d="M78 22L79 26L83 27L79 28L78 32L77 28L73 27L77 26L78 22Z" fill="#D8B894"/>
+                    <path d="M20 30L20.8 33L24 33.8L20.8 34.6L20 38L19.2 34.6L16 33.8L19.2 33L20 30Z" fill="#D8B894"/>
+                </svg>
+            </div>
+
+            <div class="error-badge">PAGE NOT FOUND</div>
+
+            <h1 class="error-code">4<span>0</span>4</h1>
+
+            <h2 class="error-title">ขออภัย ไม่พบหน้าที่คุณค้นหา</h2>
+
+            <p class="error-desc">
+                หน้าที่คุณกำลังมองหาอาจถูกลบ ย้ายที่อยู่ หรือลิงก์ URL ที่คุณป้อนเข้ามาไม่ถูกต้อง กรุณาตรวจสอบลิงก์อีกครั้งหรือเลือกหน้าเมนูที่ต้องการด้านล่างนี้
+            </p>
+
+            <p class="error-quote">
+                ♡ สงสัยเค้กชิ้นนี้จะถูกรับประทานหมดแล้ว แต่ยังมีเมนูอื่นที่อร่อยรอคุณอยู่นะ ♡
+            </p>
+
+            <!-- Buttons -->
+            <div class="error-actions">
+                <a href="index.php" class="btn-primary">
+                    <span>🏠</span> กลับสู่หน้าแรก
+                </a>
+                <a href="products.php" class="btn-secondary">
+                    <span>🎂</span> เลือกดูเค้กทั้งหมด
+                </a>
+                <a href="cart.html" class="btn-secondary">
+                    <span>🛒</span> ตะกร้าสินค้า
+                </a>
+            </div>
+
+            <!-- Quick Suggestions -->
+            <div class="quick-links">
+                <p class="quick-links-title">หรือไปยังหน้าที่ต้องการได้สะดวก:</p>
+                <div class="quick-links-list">
+                    <a href="index.php">หน้าแรก</a>
+                    <span>•</span>
+                    <a href="products.php">เมนูเค้ก</a>
+                    <span>•</span>
+                    <a href="cart.html">ตะกร้าของคุณ</a>
+                    <span>•</span>
+                    <a href="login.php">เข้าสู่ระบบ</a>
+                    <span>•</span>
+                    <a href="register.php">สมัครสมาชิก</a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div>
+                <h3>Grand Bake</h3>
+                <p>
+                    สัมผัสความอร่อยระดับพรีเมียมในทุกปอนด์ที่คุณเลือก
+                    เค้กสไตล์เกาหลีที่ใส่ใจทุกขั้นตอน
+                </p>
+            </div>
+
+            <div>
+                <h3>เมนูด่วน</h3>
+                <div class="footer-links">
+                    <a href="index.php">หน้าแรก</a>
+                    <a href="products.html">สินค้า</a>
+                    <a href="cart.html">ตะกร้าสินค้า</a>
+                    <a href="register.php">สมัครสมาชิก</a>
+                </div>
+            </div>
+
+            <div>
+                <h3>Grand Bake</h3>
+                <p>KOREAN STYLE CAKE</p>
+                <p>♡ Sweet Moments, Always</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            © 2026 Grand Bake. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- ACCOUNT DROPDOWN JAVASCRIPT -->
+    <script>
+        const accountBtn = document.getElementById("accountButton");
+        const accountDrop = document.getElementById("accountDropdown");
+
+        if (accountBtn && accountDrop) {
+            accountBtn.addEventListener("click", function(e) {
+                e.stopPropagation();
+                accountDrop.classList.toggle("account-open");
+            });
+
+            document.addEventListener("click", function(e) {
+                if (!accountDrop.contains(e.target) && !accountBtn.contains(e.target)) {
+                    accountDrop.classList.remove("account-open");
+                }
+            });
+        }
+    </script>
+    <script src="cart-badge.js"></script>
+
+</body>
+</html>

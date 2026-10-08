@@ -1,0 +1,18 @@
+# Grand Bake Apache Configuration
+
+# ตั้งให้ Apache เลือก index.php เป็นหน้าแรกเสมอ
+DirectoryIndex index.php index.html
+
+# จัดการข้อผิดพลาด Error 404
+ErrorDocument 404 /grandbake/404.php
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /grandbake/
+
+    # เปลี่ยนทาง index.html ไปที่ index.php
+    RewriteRule ^index\.html$ index.php [R=301,L]
+
+    # Rewrite products.html to products.php
+    RewriteRule ^products\.html$ products.php [R=301,L]
+</IfModule>
