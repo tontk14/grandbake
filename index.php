@@ -209,7 +209,7 @@ if (isset($_GET["subscribe"])) {
         }
 
         .account-dropdown.account-open {
-            display: block;
+            display: block !important;
             animation: dropdownIn 0.18s ease;
         }
 
