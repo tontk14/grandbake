@@ -359,6 +359,22 @@
             }
         });
 
+        // GitHub Pages static demo: rewrite .php links to .html equivalents when on github.io
+        // (ไม่มีผลกับ XAMPP/PHP ปกติ)
+        try {
+            if (window.location.hostname.indexOf('github.io') !== -1 && drawer) {
+                var pagesMap = { 'index.php': 'index.html', 'products.php': 'products.html' };
+                drawer.querySelectorAll('a[href]').forEach(function(a) {
+                    var href = a.getAttribute('href');
+                    if (!href) return;
+                    var hashIdx = href.indexOf('#');
+                    var base = hashIdx === -1 ? href : href.substring(0, hashIdx);
+                    var hash = hashIdx === -1 ? '' : href.substring(hashIdx);
+                    if (pagesMap[base]) a.setAttribute('href', pagesMap[base] + hash);
+                });
+            }
+        } catch (e) { /* ignore */ }
+
         // Safe fallback for account button ONLY if page has no inline onclick handler
         const accountBtn = navbar.querySelector('.account-button');
         if (accountBtn && !accountBtn.hasAttribute('onclick') && !accountBtn.dataset.bound) {

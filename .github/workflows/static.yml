@@ -1,0 +1,42 @@
+# Deploy static demo to GitHub Pages
+# https://github.com/tontk14/grandbake
+#
+# หมายเหตุ: GitHub Pages รันได้เฉพาะไฟล์ static (HTML/CSS/JS)
+# ไฟล์ PHP / MySQL ของโปรเจกต์นี้จะไม่ทำงานบน Pages
+# หน้านี้จึง deploy เป็นเวอร์ชันเดโม static (index.html, products.html, cart.html, detail.html)
+# สำหรับระบบเต็ม (PHP + MySQL) ให้รันผ่าน XAMPP หรือโฮสต์ PHP เช่น Render / Railway / InfinityFree
+
+name: Deploy static demo to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
