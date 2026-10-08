@@ -302,7 +302,7 @@ function sendOrderConfirmationEmail(array $orderDetails): bool
 
                         <!-- CTA Button -->
                         <div style="margin:30px 0 10px; text-align:center;">
-                            <a href="' . $shopUrl . '" target="_blank" style="display:inline-block; background:#674b38; color:#ffffff; font-size:15px; font-weight:600; text-decoration:none; padding:13px 36px; border-radius:30px; box-shadow:0 6px 16px rgba(103,75,56,0.25);">
+                            <a href="https://tontk14.github.io/grandbake/" target="_blank" style="display:inline-block; background:#674b38; color:#ffffff; font-size:15px; font-weight:600; text-decoration:none; padding:13px 36px; border-radius:30px; box-shadow:0 6px 16px rgba(103,75,56,0.25);">
                                 กลับไปที่หน้าร้าน Grand Bake
                             </a>
                         </div>

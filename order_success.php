@@ -347,7 +347,7 @@ if (!empty($orderNumber)) {
     </div>
     <div class="menu">
         <a href="index.php">หน้าแรก</a>
-        <a href="products.php">สินค้า</a>
+        <a href="products.html">สินค้า</a>
         <a href="profile.php">บัญชีของฉัน</a>
         <a href="cart.html">🛒 ตะกร้า</a>
     </div>
@@ -541,7 +541,7 @@ if (!empty($orderNumber)) {
 
         <div class="actions">
             <a href="profile.php#orders" class="btn-home">ดูประวัติการสั่งซื้อของฉัน</a>
-            <a href="products.php" class="btn-shop">เลือกซื้อเค้กเพิ่ม</a>
+            <a href="products.html" class="btn-shop">เลือกซื้อเค้กเพิ่ม</a>
         </div>
     </div>
 </div>

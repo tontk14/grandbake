@@ -41,6 +41,16 @@ $conn->query("
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ");
 
+// ตรวจสอบและเพิ่มคอลัมน์ user_id ใน orders หากยังไม่มี
+$colCheck = $conn->query("SHOW COLUMNS FROM orders LIKE 'user_id'");
+if ($colCheck && $colCheck->num_rows === 0) {
+    @$conn->query("ALTER TABLE orders ADD COLUMN user_id INT NULL AFTER order_number");
+}
+
+// ซิงค์ Collation คอลัมน์ email ให้ตรงกันเพื่อป้องกันข้อผิดพลาด Illegal mix of collations
+@$conn->query("ALTER TABLE orders MODIFY customer_email VARCHAR(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL");
+@$conn->query("ALTER TABLE users MODIFY email VARCHAR(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL");
+
 $alertMsg = "";
 $alertType = "";
 
@@ -209,6 +219,7 @@ if ($isAdmin) {
     }
 
     // สร้างคำสั่ง SQL สำหรับดึงข้อมูลลูกค้าพร้อมสถิติคำสั่งซื้อ
+    // กำหนด COLLATE utf8mb4_general_ci เพื่อป้องกัน Illegal mix of collations ข้ามตาราง
     $sql = "
         SELECT 
             u.id, 
@@ -222,7 +233,7 @@ if ($isAdmin) {
             COALESCE(SUM(CASE WHEN o.status != 'cancelled' THEN o.total_amount ELSE 0 END), 0) AS total_spent,
             MAX(o.created_at) AS last_order_date
         FROM users u
-        LEFT JOIN orders o ON (o.user_id = u.id OR o.customer_email = u.email)
+        LEFT JOIN orders o ON (o.user_id = u.id OR o.customer_email COLLATE utf8mb4_general_ci = u.email COLLATE utf8mb4_general_ci)
         WHERE 1=1
     ";
 
@@ -239,7 +250,7 @@ if ($isAdmin) {
         $types .= "ssss";
     }
 
-    $sql .= " GROUP BY u.id";
+    $sql .= " GROUP BY u.id, u.first_name, u.last_name, u.email, u.phone, u.address, u.created_at";
 
     // กรองตามประวัติคำสั่งซื้อ
     if ($filterOrder === "has_orders") {
@@ -268,20 +279,26 @@ if ($isAdmin) {
             break;
     }
 
-    $stmt = $conn->prepare($sql);
-    if (!empty($params)) {
-        $stmt->bind_param($types, ...$params);
-    }
-    $stmt->execute();
-    $res = $stmt->get_result();
-    while ($row = $res->fetch_assoc()) {
-        $users[] = $row;
-        if ((int)$row["total_orders"] > 0) {
-            $activeBuyers++;
+    try {
+        $stmt = $conn->prepare($sql);
+        if (!empty($params)) {
+            $stmt->bind_param($types, ...$params);
         }
-        $totalMemberSpent += (float)$row["total_spent"];
+        $stmt->execute();
+        $res = $stmt->get_result();
+        while ($row = $res->fetch_assoc()) {
+            $users[] = $row;
+            if ((int)$row["total_orders"] > 0) {
+                $activeBuyers++;
+            }
+            $totalMemberSpent += (float)$row["total_spent"];
+        }
+        $stmt->close();
+    } catch (\Throwable $e) {
+        $alertMsg = "เกิดข้อผิดพลาดในการโหลดข้อมูลสมาชิก: " . htmlspecialchars($e->getMessage());
+        $alertType = "error";
+        error_log("admin_users SQL error: " . $e->getMessage());
     }
-    $stmt->close();
 }
 
 function formatThaiDate($datetime) {

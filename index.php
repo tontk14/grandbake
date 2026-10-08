@@ -12,19 +12,25 @@ if (isset($_GET["subscribe"])) {
 
         case "success":
             $subscribeMessage =
-                "สมัครรับข่าวสารสำเร็จ! เราได้ส่งอีเมลยืนยันไปให้คุณแล้ว";
+                "สมัครรับข่าวสารสำเร็จ! เราได้ส่งอีเมลยืนยันไปให้คุณแล้ว (กรุณาตรวจดูในโฟลเดอร์ จดหมายขยะ/Spam หรือแท็บ โปรโมชัน หากไม่พบในกล่องข้อความหลัก)";
+            $subscribeType = "success";
+            break;
+
+        case "resend_success":
+            $subscribeMessage =
+                "อีเมลนี้เคยสมัครไว้แล้ว เราได้ส่งอีเมลยืนยันซ้ำไปให้คุณอีกครั้งเรียบร้อยแล้ว! (กรุณาตรวจดูในโฟลเดอร์ จดหมายขยะ/Spam หรือแท็บ โปรโมชัน)";
             $subscribeType = "success";
             break;
 
         case "exists":
             $subscribeMessage =
-                "อีเมลนี้สมัครรับข่าวสารไว้แล้ว";
-            $subscribeType = "error";
+                "อีเมลนี้สมัครรับข่าวสารไว้ในระบบแล้ว";
+            $subscribeType = "info";
             break;
 
         case "email_error":
             $subscribeMessage =
-                "สมัครรับข่าวสารสำเร็จ แต่ไม่สามารถส่งอีเมลแจ้งเตือนได้";
+                "สมัครรับข่าวสารสำเร็จ แต่ไม่สามารถส่งอีเมลแจ้งเตือนได้ในขณะนี้";
             $subscribeType = "error";
             break;
 
@@ -1028,6 +1034,77 @@ if (isset($_GET["subscribe"])) {
             color: #a24f47;
         }
 
+        .subscribe-alert.info {
+            background: #fdf5ee;
+            border: 1px solid #ebd8c8;
+            color: #684835;
+        }
+
+        /* FLOATING TOAST NOTIFICATION */
+        .toast-notify {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 99999;
+            max-width: 440px;
+            width: calc(100% - 32px);
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 12px 36px rgba(50, 30, 20, 0.2), 0 2px 8px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 16px 18px;
+            border-left: 5px solid #47704b;
+            animation: toastSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            font-family: "Prompt", sans-serif;
+        }
+        .toast-notify.error {
+            border-left-color: #d9534f;
+        }
+        .toast-notify.info {
+            border-left-color: #774932;
+        }
+        @keyframes toastSlideIn {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .toast-icon {
+            font-size: 26px;
+            line-height: 1;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .toast-body {
+            flex: 1;
+            min-width: 0;
+        }
+        .toast-title {
+            font-weight: 600;
+            font-size: 14.5px;
+            color: #3f2a1d;
+            margin-bottom: 4px;
+        }
+        .toast-text {
+            font-size: 13px;
+            color: #6e584a;
+            line-height: 1.55;
+        }
+        .toast-close {
+            background: none;
+            border: none;
+            color: #a48d7d;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 0 4px;
+            line-height: 1;
+            border-radius: 6px;
+            transition: color 0.15s;
+        }
+        .toast-close:hover {
+            color: #4b3629;
+        }
+
 
         /* ==========================================
            FOOTER
@@ -1306,6 +1383,35 @@ if (isset($_GET["subscribe"])) {
 
 
 <body>
+
+    <?php if ($subscribeMessage !== ""): ?>
+        <!-- FLOATING TOAST NOTIFICATION -->
+        <div id="subscribeToast" class="toast-notify <?= $subscribeType ?>" role="alert">
+            <div class="toast-icon">
+                <?= ($subscribeType === 'success' ? '💌' : ($subscribeType === 'info' ? 'ℹ️' : '⚠️')) ?>
+            </div>
+            <div class="toast-body">
+                <div class="toast-title">
+                    <?= ($subscribeType === 'success' ? 'Grand Bake Newsletter' : 'แจ้งเตือนระบบ') ?>
+                </div>
+                <div class="toast-text">
+                    <?= htmlspecialchars($subscribeMessage) ?>
+                </div>
+            </div>
+            <button type="button" class="toast-close" onclick="document.getElementById('subscribeToast').remove()" aria-label="ปิด">✕</button>
+        </div>
+        <script>
+            setTimeout(() => {
+                const toast = document.getElementById('subscribeToast');
+                if (toast) {
+                    toast.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateY(-20px)';
+                    setTimeout(() => toast.remove(), 400);
+                }
+            }, 9000);
+        </script>
+    <?php endif; ?>
 
     <!-- ==========================================
          NAVBAR

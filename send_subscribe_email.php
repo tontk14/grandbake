@@ -31,6 +31,15 @@ function sendSubscribeEmail($customerEmail)
 
         $mail->CharSet = 'UTF-8';
 
+        // ป้องกัน SSL verify error บนสภาพแวดล้อม Windows / XAMPP Localhost
+        $mail->SMTPOptions = [
+            'ssl' => [
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
+            ]
+        ];
+
         // ==========================================
         // ผู้ส่ง
         // ==========================================
@@ -692,8 +701,8 @@ function sendSubscribeEmail($customerEmail)
 
         return true;
 
-    } catch (Exception $e) {
-
+    } catch (\Throwable $e) {
+        error_log("PHPMailer subscribe error: " . $mail->ErrorInfo . " | Exception: " . $e->getMessage());
         return false;
     }
 }

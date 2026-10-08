@@ -1032,7 +1032,7 @@
 
 
                 <a
-                    href="index.php"
+                    href="index.html"
                     class="home"
                 >
                     ← กลับหน้าแรก

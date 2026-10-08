@@ -45,6 +45,13 @@ $conn->query("
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ");
 
+// ตรวจสอบและเพิ่มคอลัมน์ user_id ใน orders หากยังไม่มี
+$colCheck = $conn->query("SHOW COLUMNS FROM orders LIKE 'user_id'");
+if ($colCheck && $colCheck->num_rows === 0) {
+    @$conn->query("ALTER TABLE orders ADD COLUMN user_id INT NULL AFTER order_number");
+}
+@$conn->query("ALTER TABLE orders MODIFY customer_email VARCHAR(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL");
+
 $conn->query("
     CREATE TABLE IF NOT EXISTS order_items (
         id INT AUTO_INCREMENT PRIMARY KEY,

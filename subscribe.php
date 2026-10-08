@@ -22,94 +22,60 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // ตรวจสอบ Email
     // ==========================================
 
-   if ($email === "") {
-
-    header(
-        "Location: index.php?subscribe=empty"
-    );
-
-    exit;
-
-} elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-
-    header(
-        "Location: index.php?subscribe=invalid"
-    );
-
-    exit;
-
+    if ($email === "") {
+        header("Location: index.php?subscribe=empty#contact");
+        exit;
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        header("Location: index.php?subscribe=invalid#contact");
+        exit;
     } else {
-
         // ==========================================
         // ตรวจสอบว่าเคย Subscribe แล้วหรือยัง
         // ==========================================
-
         $check = $conn->prepare(
             "SELECT id FROM subscribers WHERE email = ?"
         );
-
         $check->bind_param("s", $email);
         $check->execute();
         $check->store_result();
 
-       if ($check->num_rows > 0) {
-
-    header(
-        "Location: index.php?subscribe=exists"
-    );
-
-    exit;
-
-} 
-else {
-
+        if ($check->num_rows > 0) {
+            // หากมีอีเมลในระบบแล้ว ส่งอีเมลยืนยันซ้ำอีกครั้ง (เพื่อให้ผู้ใช้ทดสอบหรือได้รับเมลยืนยัน)
+            $emailSent = sendSubscribeEmail($email);
+            if ($emailSent) {
+                header("Location: index.php?subscribe=resend_success#contact");
+            } else {
+                header("Location: index.php?subscribe=exists#contact");
+            }
+            exit;
+        } else {
             // ==========================================
             // บันทึก Email ลงฐานข้อมูล
             // ==========================================
-
             $stmt = $conn->prepare(
-                "INSERT INTO subscribers (email)
-                 VALUES (?)"
+                "INSERT INTO subscribers (email) VALUES (?)"
             );
-
             $stmt->bind_param("s", $email);
 
             if ($stmt->execute()) {
-
                 // ==========================================
                 // ส่ง Email แจ้งเตือน
                 // ==========================================
-
                 $emailSent = sendSubscribeEmail($email);
 
                 if ($emailSent) {
-
-    header(
-        "Location: index.php?subscribe=success"
-    );
-
-    exit;
-
-} else {
-
-    header(
-        "Location: index.php?subscribe=email_error"
-    );
-
-    exit;
-}
-
+                    header("Location: index.php?subscribe=success#contact");
+                    exit;
+                } else {
+                    header("Location: index.php?subscribe=email_error#contact");
+                    exit;
+                }
             } else {
-
-                $message =
-                    "เกิดข้อผิดพลาด กรุณาลองใหม่";
-
+                $message = "เกิดข้อผิดพลาด กรุณาลองใหม่";
                 $message_type = "error";
             }
-
             $stmt->close();
         }
-
         $check->close();
     }
 }
@@ -359,7 +325,7 @@ else {
 
 
         <a
-            href="index.php"
+            href="index.html"
             class="back"
         >
             ← กลับหน้าแรก
