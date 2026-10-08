@@ -27,6 +27,11 @@ if (isset($_GET["action"]) && $_GET["action"] === "logout") {
 
 $isAdmin = !empty($_SESSION["admin_logged"]);
 
+if ($isAdmin && isset($_GET["tab"]) && $_GET["tab"] === "users") {
+    header("Location: admin_users.php");
+    exit;
+}
+
 // ตรวจสอบและสร้างตาราง orders / order_items หากยังไม่มี
 $conn->query("
     CREATE TABLE IF NOT EXISTS orders (
@@ -1136,7 +1141,10 @@ function formatThaiDate($datetime) {
                     <?php endif; ?>
                 </form>
 
-                <div>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+                    <a href="admin_users.php" class="btn-reset" style="background: #774932; color: #ffffff; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 3px 8px rgba(119,73,50,0.25);">
+                        👥 จัดการสมาชิกลูกค้า ➔
+                    </a>
                     <button type="button" onclick="window.print()" class="btn-reset" style="cursor: pointer;">
                         🖨️ พิมพ์รายการออเดอร์
                     </button>

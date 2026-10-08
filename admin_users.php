@@ -1173,7 +1173,10 @@ function formatThaiDate($datetime) {
                     <?php endif; ?>
                 </form>
 
-                <div>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+                    <a href="admin_orders.php" class="btn-reset" style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                        📦 ไปจัดการคำสั่งซื้อ
+                    </a>
                     <button type="button" onclick="openAddUserModal()" class="btn-add-user">
                         ➕ เพิ่มสมาชิกใหม่
                     </button>
